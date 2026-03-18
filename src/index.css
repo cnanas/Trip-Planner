@@ -118,3 +118,6 @@ body {
 
 @keyframes bar-fill { from { width: 0; } }
 .budget-bar-fill { animation: bar-fill 600ms ease-out; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

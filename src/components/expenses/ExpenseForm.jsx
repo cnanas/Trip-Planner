@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { X } from 'lucide-react'
 import { useExpenseStore } from '../../store/expenseStore'
 import { EXPENSE_CATEGORIES } from '../../data/itinerary'
 
@@ -43,27 +44,28 @@ export default function ExpenseForm({ onClose }) {
         <div className="bottom-sheet-handle" />
         <div className="px-4 py-3 border-b border-[#e2e8f0] flex items-center justify-between">
           <h2 className="font-semibold text-[#0f172a]">Add Expense</h2>
-          <button onClick={onClose} className="w-11 h-11 flex items-center justify-center text-[#94a3b8] text-xl hover:text-[#64748b]">✕</button>
+          <button onClick={onClose} className="w-10 h-10 flex items-center justify-center text-[#94a3b8] hover:text-[#64748b] rounded-xl hover:bg-[#f8fafc] transition-colors">
+            <X size={18} />
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-4 py-4 space-y-4">
+        <form onSubmit={handleSubmit} className="px-4 py-4 space-y-5">
           {/* Category */}
           <div>
-            <label className="block text-xs text-[#64748b] mb-2">Category</label>
+            <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2.5">Category</label>
             <div className="grid grid-cols-4 gap-2">
               {EXPENSE_CATEGORIES.map(cat => (
                 <button
                   key={cat.id}
                   type="button"
                   onClick={() => set('category', cat.id)}
-                  className={`flex flex-col items-center gap-1 py-2.5 rounded-xl border text-xs transition-colors ${
+                  className={`py-2.5 rounded-xl border text-xs font-medium transition-colors ${
                     form.category === cat.id
                       ? 'border-[#f97316] bg-[#fff7ed] text-[#f97316]'
                       : 'border-[#e2e8f0] bg-[#f8fafc] text-[#64748b] hover:border-[#cbd5e1]'
                   }`}
                 >
-                  <span className="text-xl">{cat.icon}</span>
-                  <span className="text-[10px]">{cat.label.split(' ')[0]}</span>
+                  {cat.label.split(' ')[0]}
                 </button>
               ))}
             </div>
@@ -71,9 +73,9 @@ export default function ExpenseForm({ onClose }) {
 
           {/* Amount */}
           <div>
-            <label className="block text-xs text-[#64748b] mb-1.5">Amount *</label>
+            <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2">Amount *</label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94a3b8] font-mono">$</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94a3b8] font-mono text-sm">$</span>
               <input
                 type="number"
                 inputMode="decimal"
@@ -83,7 +85,7 @@ export default function ExpenseForm({ onClose }) {
                 placeholder="0.00"
                 value={form.amount}
                 onChange={e => set('amount', e.target.value)}
-                className="w-full bg-[#f8fafc] border border-[#e2e8f0] focus:border-[#f97316] rounded-xl pl-7 pr-4 py-3 text-base font-mono text-[#0f172a] placeholder-[#94a3b8] outline-none transition-colors"
+                className="w-full bg-[#f8fafc] border border-[#e2e8f0] focus:border-[#f97316] rounded-xl pl-8 pr-4 py-3 text-base font-mono text-[#0f172a] placeholder-[#94a3b8] outline-none transition-colors"
                 style={{ fontSize: '16px' }}
               />
             </div>
@@ -91,7 +93,7 @@ export default function ExpenseForm({ onClose }) {
 
           {/* Merchant */}
           <div>
-            <label className="block text-xs text-[#64748b] mb-1.5">Merchant</label>
+            <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2">Merchant</label>
             <input
               type="text"
               placeholder="Shell Gas Station"
@@ -104,7 +106,7 @@ export default function ExpenseForm({ onClose }) {
 
           {/* Day */}
           <div>
-            <label className="block text-xs text-[#64748b] mb-1.5">Trip Day</label>
+            <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2">Trip Day</label>
             <div className="flex gap-2">
               {['', '1', '2', '3', '4', '5'].map(d => (
                 <button
@@ -136,7 +138,7 @@ export default function ExpenseForm({ onClose }) {
 
           <button
             type="submit"
-            className="w-full bg-[#f97316] hover:bg-[#ea6c0e] text-white font-semibold rounded-xl py-3.5 transition-colors text-base"
+            className="w-full bg-[#f97316] hover:bg-[#ea6c0e] text-white font-semibold rounded-2xl py-3.5 transition-colors text-base"
           >
             Add Expense
           </button>

@@ -1,16 +1,18 @@
+import { Phone, MapPin } from 'lucide-react'
+
 const TAG_LABELS = {
-  breakfast: '🍳 Breakfast',
-  'dog-friendly': '🐾 Pet Friendly',
-  'dog-treats': '🦴 Dog Treats',
-  'pet-area': '🌿 Pet Area',
-  pool: '🏊 Pool',
-  gym: '💪 Gym',
-  quiet: '🤫 Quiet',
-  'highway-access': '🛣️ Highway Access',
-  'highly-rated': '⭐ Highly Rated',
-  gem: '💎 Hidden Gem',
-  retro: '🕹️ Retro',
-  'near-billings': '📍 Near Billings',
+  breakfast: 'Breakfast',
+  'dog-friendly': 'Pet Friendly',
+  'dog-treats': 'Dog Treats',
+  'pet-area': 'Pet Area',
+  pool: 'Pool',
+  gym: 'Gym',
+  quiet: 'Quiet',
+  'highway-access': 'Highway Access',
+  'highly-rated': 'Highly Rated',
+  gem: 'Hidden Gem',
+  retro: 'Retro',
+  'near-billings': 'Near Billings',
 }
 
 function formatPhone(raw) {
@@ -25,7 +27,7 @@ function StarRating({ rating }) {
   const full = Math.floor(rating)
   const half = rating - full >= 0.3
   return (
-    <span className="text-[#f59e0b] text-xs">
+    <span className="text-[#f59e0b] text-xs tracking-tight">
       {'★'.repeat(full)}{half ? '½' : ''}{'☆'.repeat(Math.max(0, 5 - full - (half ? 1 : 0)))}
     </span>
   )
@@ -35,13 +37,12 @@ export default function HotelCard({ hotel }) {
   if (!hotel) return null
 
   return (
-    <div className="bg-[#f8fafc] rounded-xl p-4 border border-[#e2e8f0] mt-3">
+    <div className="bg-[#f8fafc] rounded-2xl p-4 border border-[#e2e8f0]">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs text-[#94a3b8] mb-0.5">Tonight's Stay</p>
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-0.5">Tonight's Stay</p>
           <h3 className="text-sm font-semibold text-[#0f172a] leading-snug">{hotel.name}</h3>
         </div>
-        <span className="text-xl shrink-0">🏨</span>
       </div>
 
       <div className="flex items-center gap-2 mt-2">
@@ -59,9 +60,7 @@ export default function HotelCard({ hotel }) {
       )}
 
       {hotel.petNotes && (
-        <p className="text-xs text-[#ec4899] mt-2 leading-relaxed">
-          🐾 {hotel.petNotes}
-        </p>
+        <p className="text-xs text-[#ec4899] mt-2 leading-relaxed">{hotel.petNotes}</p>
       )}
 
       <div className="flex flex-wrap gap-1.5 mt-3">
@@ -80,12 +79,15 @@ export default function HotelCard({ hotel }) {
           href={`tel:${hotel.phone}`}
           className="flex items-center gap-1.5 text-xs text-[#2563eb] hover:text-[#1d4ed8] transition-colors min-h-[44px]"
         >
-          <span>📞</span>
+          <Phone size={13} />
           <span>{formatPhone(hotel.phone)}</span>
         </a>
       </div>
 
-      <p className="text-xs text-[#94a3b8] mt-1">📍 {hotel.address}</p>
+      <div className="flex items-center gap-1.5 mt-1">
+        <MapPin size={11} className="text-[#94a3b8] shrink-0" />
+        <p className="text-xs text-[#94a3b8]">{hotel.address}</p>
+      </div>
     </div>
   )
 }

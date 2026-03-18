@@ -15,30 +15,30 @@ export default function SummaryPage() {
   const fuelCost = (TRIP_SUMMARY.totalMiles / avgMpg) * gasPricePerGallon
 
   return (
-    <div className="px-4 pt-4 pb-4 space-y-4">
-      <h1 className="font-mono text-xl font-bold text-[#0f172a]">Trip Summary</h1>
+    <div className="px-4 pt-4 pb-8 space-y-4">
+      <h1 className="text-xl font-bold text-[#0f172a] tracking-tight">Trip Summary</h1>
 
       {/* Trip stats */}
       <div className="grid grid-cols-2 gap-3">
         {[
-          { label: 'Total Miles', value: TRIP_SUMMARY.totalMiles.toLocaleString(), unit: 'mi', color: '#f97316' },
-          { label: 'Days Complete', value: `${completedDays.length}/${TRIP_SUMMARY.totalDays}`, unit: 'days', color: '#22c55e' },
-          { label: 'Total Spent', value: `$${totals.total.toFixed(0)}`, unit: `of $${budget.total}`, color: totals.total > budget.total ? '#ef4444' : '#0f172a' },
-          { label: 'Est. Fuel Cost', value: `$${fuelCost.toFixed(0)}`, unit: `@ ${avgMpg} mpg`, color: '#f59e0b' },
+          { label: 'Total Miles',    value: TRIP_SUMMARY.totalMiles.toLocaleString(), unit: 'mi',                         color: '#f97316' },
+          { label: 'Days Complete',  value: `${completedDays.length}/${TRIP_SUMMARY.totalDays}`, unit: 'days',             color: '#22c55e' },
+          { label: 'Total Spent',    value: `$${totals.total.toFixed(0)}`,  unit: `of $${budget.total}`,                  color: totals.total > budget.total ? '#ef4444' : '#0f172a' },
+          { label: 'Est. Fuel Cost', value: `$${fuelCost.toFixed(0)}`,      unit: `@ ${avgMpg} mpg`,                      color: '#f59e0b' },
         ].map(stat => (
-          <div key={stat.label} className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
+          <div key={stat.label} className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
             <div className="font-mono text-xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
             <div className="text-xs text-[#94a3b8] mt-0.5">{stat.unit}</div>
-            <div className="text-xs text-[#64748b] mt-1">{stat.label}</div>
+            <div className="text-xs text-[#64748b] mt-1 font-medium">{stat.label}</div>
           </div>
         ))}
       </div>
 
       {/* Spending by category */}
       {expenses.length > 0 && (
-        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-          <p className="text-xs text-[#64748b] mb-3">Spending by Category</p>
-          <div className="space-y-2.5">
+        <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-4">Spending by Category</p>
+          <div className="space-y-3">
             {EXPENSE_CATEGORIES.map(cat => {
               const spent = totals.byCategory[cat.id] ?? 0
               const budgeted = budget.byCategory[cat.id] ?? 0
@@ -46,16 +46,13 @@ export default function SummaryPage() {
               if (spent === 0) return null
               return (
                 <div key={cat.id}>
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-1.5 text-xs text-[#64748b]">
-                      <span>{cat.icon}</span>
-                      <span>{cat.label}</span>
-                    </div>
-                    <span className="font-mono text-xs text-[#0f172a]">${spent.toFixed(0)}</span>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs text-[#64748b] font-medium">{cat.label}</span>
+                    <span className="font-mono text-xs font-bold text-[#0f172a]">${spent.toFixed(0)}</span>
                   </div>
-                  <div className="h-1.5 bg-[#e2e8f0] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#f1f5f9] rounded-full overflow-hidden">
                     <div
-                      className="h-full rounded-full"
+                      className="h-full rounded-full transition-all"
                       style={{ width: `${pct}%`, backgroundColor: cat.color }}
                     />
                   </div>
@@ -67,8 +64,8 @@ export default function SummaryPage() {
       )}
 
       {/* Mood timeline */}
-      <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-        <p className="text-xs text-[#64748b] mb-3">Mood Timeline</p>
+      <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+        <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-4">Mood Timeline</p>
         <div className="flex gap-3">
           {DAYS.map(day => {
             const entry = entries[day.number]
@@ -84,9 +81,9 @@ export default function SummaryPage() {
         </div>
       </div>
 
-      {/* Journal previews */}
-      <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-        <p className="text-xs text-[#64748b] mb-3">📔 Journal Highlights</p>
+      {/* Journal highlights */}
+      <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+        <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-4">Journal</p>
         <div className="space-y-3">
           {DAYS.map(day => {
             const text = entries[day.number]?.text

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { X, Plus } from 'lucide-react'
 import { useJournalStore } from '../store/journalStore'
 import { DOG_LOG_TYPES, MILESTONE_PRESETS } from '../data/itinerary'
 
@@ -65,35 +66,37 @@ export default function JournalPage() {
           <button
             key={d}
             onClick={() => setActiveDay(d)}
-            className={`shrink-0 flex flex-col items-center gap-0.5 w-14 py-2 rounded-xl border transition-colors ${
+            className={`shrink-0 flex flex-col items-center gap-0.5 w-14 py-2.5 rounded-2xl border transition-colors ${
               activeDay === d
                 ? 'bg-[#f97316] border-[#f97316] text-white'
-                : 'bg-[#f8fafc] border-[#e2e8f0] text-[#64748b]'
+                : 'bg-white border-[#e2e8f0] text-[#64748b] hover:border-[#f97316]'
             }`}
           >
             <span className="font-mono text-xs font-bold">D{d}</span>
-            {entries[d]?.mood && <span className="text-sm">{MOODS.find(m => m.id === entries[d].mood)?.emoji}</span>}
+            {entries[d]?.mood && <span className="text-sm leading-none">{MOODS.find(m => m.id === entries[d].mood)?.emoji}</span>}
           </button>
         ))}
       </div>
 
-      <div className="px-4 space-y-4">
+      <div className="px-4 space-y-3">
         {/* Notes */}
-        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-          <label className="block text-xs text-[#64748b] mb-2">📝 Day {activeDay} Notes</label>
+        <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+          <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2.5">
+            Day {activeDay} Notes
+          </label>
           <textarea
             value={entry.text}
             onChange={handleNoteChange}
             placeholder={`How's Day ${activeDay} going?`}
             rows={5}
-            className="w-full bg-[#f8fafc] border border-[#e2e8f0] focus:border-[#f97316] rounded-lg px-3 py-2.5 text-[#0f172a] placeholder-[#94a3b8] resize-none outline-none transition-colors"
+            className="w-full bg-[#f8fafc] border border-[#e2e8f0] focus:border-[#f97316] rounded-xl px-3 py-2.5 text-sm text-[#0f172a] placeholder-[#94a3b8] resize-none outline-none transition-colors"
             style={{ fontSize: '16px' }}
           />
         </div>
 
-        {/* Mood */}
-        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-          <p className="text-xs text-[#64748b] mb-3">How are you feeling?</p>
+        {/* Mood + Energy */}
+        <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-3">Mood</p>
           <div className="grid grid-cols-4 gap-2">
             {MOODS.map(m => (
               <button
@@ -102,23 +105,22 @@ export default function JournalPage() {
                 className={`flex flex-col items-center gap-1 py-2.5 rounded-xl border transition-colors ${
                   entry.mood === m.id
                     ? 'border-[#f97316] bg-[#fff7ed]'
-                    : 'border-[#e2e8f0] bg-[#f8fafc]'
+                    : 'border-[#e2e8f0] bg-[#f8fafc] hover:border-[#f97316]'
                 }`}
               >
                 <span className="text-xl">{m.emoji}</span>
-                <span className="text-[10px] text-[#64748b]">{m.label}</span>
+                <span className="text-[10px] text-[#64748b] font-medium">{m.label}</span>
               </button>
             ))}
           </div>
 
-          {/* Energy */}
-          <p className="text-xs text-[#64748b] mt-3 mb-2">Energy level</p>
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mt-4 mb-2">Energy</p>
           <div className="flex gap-2">
             {[1, 2, 3, 4, 5].map(n => (
               <button
                 key={n}
                 onClick={() => handleEnergySet(n)}
-                className={`flex-1 py-2 rounded-lg text-sm border transition-colors ${
+                className={`flex-1 py-2 rounded-xl text-sm border transition-colors ${
                   (entry.energyLevel ?? 0) >= n
                     ? 'bg-[#f97316] border-[#f97316] text-white'
                     : 'bg-[#f8fafc] border-[#e2e8f0] text-[#94a3b8]'
@@ -132,11 +134,11 @@ export default function JournalPage() {
 
         {/* Dog Log */}
         {dogs.length > 0 && (
-          <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-            <p className="text-xs text-[#64748b] mb-3">🐾 Dog Log</p>
+          <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+            <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-3">Dog Log</p>
             {dogs.map(dog => (
               <div key={dog.id} className="mb-3">
-                <p className="text-sm font-medium text-[#0f172a] mb-2">{dog.name}</p>
+                <p className="text-sm font-semibold text-[#0f172a] mb-2">{dog.name}</p>
                 <div className="grid grid-cols-5 gap-2">
                   {DOG_LOG_TYPES.map(type => (
                     <button
@@ -145,14 +147,13 @@ export default function JournalPage() {
                       className="flex flex-col items-center gap-1 py-3 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] hover:border-[#ec4899] transition-colors active:bg-[#fce7f3] min-h-[56px]"
                     >
                       <span className="text-xl">{type.icon}</span>
-                      <span className="text-[9px] text-[#64748b]">{type.label}</span>
+                      <span className="text-[9px] text-[#64748b] font-medium">{type.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
             ))}
 
-            {/* Dog log entries */}
             {entry.dogLogs.length > 0 && (
               <div className="mt-3 space-y-1.5 max-h-40 overflow-y-auto">
                 {[...entry.dogLogs].reverse().map(log => {
@@ -161,7 +162,6 @@ export default function JournalPage() {
                   return (
                     <div key={log.id} className="flex items-center gap-2 text-xs text-[#64748b]">
                       <span className="font-mono text-[#94a3b8]">{log.time}</span>
-                      <span>{type?.emoji}</span>
                       <span>{dog?.name} · {type?.label}</span>
                     </div>
                   )
@@ -172,10 +172,9 @@ export default function JournalPage() {
         )}
 
         {/* Milestones */}
-        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-sm">
-          <p className="text-xs text-[#64748b] mb-3">📍 Milestones</p>
+        <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-3">Milestones</p>
 
-          {/* Presets */}
           <div className="flex flex-wrap gap-2 mb-3">
             {MILESTONE_PRESETS.map(preset => (
               <button
@@ -188,7 +187,6 @@ export default function JournalPage() {
             ))}
           </div>
 
-          {/* Custom */}
           <div className="flex gap-2">
             <input
               type="text"
@@ -196,29 +194,27 @@ export default function JournalPage() {
               onChange={e => setNewMilestone(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleAddMilestone(newMilestone)}
               placeholder="Custom milestone..."
-              className="flex-1 bg-[#f8fafc] border border-[#e2e8f0] focus:border-[#f97316] rounded-xl px-3 py-2.5 text-[#0f172a] placeholder-[#94a3b8] outline-none transition-colors"
+              className="flex-1 bg-[#f8fafc] border border-[#e2e8f0] focus:border-[#f97316] rounded-xl px-3 py-2.5 text-sm text-[#0f172a] placeholder-[#94a3b8] outline-none transition-colors"
               style={{ fontSize: '16px' }}
             />
             <button
               onClick={() => handleAddMilestone(newMilestone)}
-              className="w-11 h-11 bg-[#f97316] rounded-xl flex items-center justify-center text-white font-bold shrink-0"
+              className="w-11 h-11 bg-[#f97316] rounded-xl flex items-center justify-center text-white shrink-0 hover:bg-[#ea6c0e] transition-colors"
             >
-              +
+              <Plus size={18} />
             </button>
           </div>
 
-          {/* List */}
           {entry.milestones.length > 0 && (
             <div className="mt-3 space-y-2">
               {entry.milestones.map(m => (
-                <div key={m.id} className="flex items-center gap-2 bg-[#f8fafc] rounded-lg px-3 py-2 border border-[#e2e8f0]">
-                  <span className="text-sm">📍</span>
+                <div key={m.id} className="flex items-center gap-2 bg-[#f8fafc] rounded-xl px-3 py-2.5 border border-[#e2e8f0]">
                   <span className="text-sm text-[#0f172a] flex-1">{m.text}</span>
                   <button
                     onClick={() => deleteMilestone(activeDay, m.id)}
-                    className="text-[#94a3b8] hover:text-[#ef4444] w-8 h-8 flex items-center justify-center text-xs transition-colors"
+                    className="text-[#94a3b8] hover:text-[#ef4444] w-7 h-7 flex items-center justify-center rounded-lg transition-colors"
                   >
-                    ✕
+                    <X size={14} />
                   </button>
                 </div>
               ))}

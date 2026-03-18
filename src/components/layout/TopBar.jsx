@@ -1,3 +1,5 @@
+import { Map } from 'lucide-react'
+
 export default function TopBar({ title = 'Road Trip', subtitle }) {
   return (
     <header
@@ -7,12 +9,14 @@ export default function TopBar({ title = 'Road Trip', subtitle }) {
         height: 'calc(var(--safe-top) + 52px)',
       }}
     >
-      <div className="flex items-center gap-2">
-        <span className="text-lg">🚛</span>
-        <span className="font-mono text-sm font-bold text-[#0f172a] tracking-wide">{title}</span>
+      <div className="flex items-center gap-2.5">
+        <div className="w-7 h-7 bg-[#f97316] rounded-lg flex items-center justify-center shrink-0">
+          <Map size={14} className="text-white" />
+        </div>
+        <span className="font-semibold text-sm text-[#0f172a]">{title}</span>
       </div>
       {subtitle && (
-        <span className="font-mono text-xs text-[#64748b]">{subtitle}</span>
+        <span className="text-xs text-[#64748b]">{subtitle}</span>
       )}
     </header>
   )
