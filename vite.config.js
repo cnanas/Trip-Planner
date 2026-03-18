@@ -15,7 +15,7 @@ export default defineConfig({
         short_name: 'Road Trip',
         description: 'Cross-country moving trip planner — Sunderland, MA to Spokane, WA',
         display: 'standalone',
-        background_color: '#0f1117',
+        background_color: '#ffffff',
         theme_color: '#f97316',
         orientation: 'portrait-primary',
         start_url: '/',
