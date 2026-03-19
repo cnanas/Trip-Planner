@@ -20,8 +20,11 @@ function getFallback(stops) {
   })
 }
 
+function cacheKey(stops) {
+  return 'osrm_' + stops.map(s => `${s.lat},${s.lng}`).join('|')
+}
+
 async function fetchLeg(from, to) {
-  // eslint-disable-next-line no-unused-vars
   const coords = `${from.lng},${from.lat};${to.lng},${to.lat}`
   try {
     const res = await fetch(
@@ -36,6 +39,23 @@ async function fetchLeg(from, to) {
   } catch {
     return null
   }
+}
+
+async function fetchAllLegs(routeStops) {
+  const key = cacheKey(routeStops)
+  try {
+    const cached = sessionStorage.getItem(key)
+    if (cached) return JSON.parse(cached)
+  } catch { /* ignore */ }
+
+  const results = await Promise.all(
+    routeStops.slice(0, -1).map((from, i) => fetchLeg(from, routeStops[i + 1]))
+  )
+  const fallback = getFallback(routeStops)
+  const segments = results.map((seg, i) => seg ?? fallback[i])
+
+  try { sessionStorage.setItem(key, JSON.stringify(segments)) } catch { /* ignore */ }
+  return segments
 }
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
@@ -74,13 +94,20 @@ function MapController({ selectedDay, segments, stops }) {
     prev.current = selectedDay
 
     const seg = segments?.[selectedDay - 1]
-    const pts = seg?.length >= 2 ? seg : [
-      [stops[selectedDay - 1].lat, stops[selectedDay - 1].lng],
-      [stops[selectedDay].lat, stops[selectedDay].lng],
-    ]
+    const fromStop = stops[selectedDay - 1]
+    const toStop   = stops[selectedDay]
+    const pts = seg?.length >= 2 ? seg : (
+      fromStop && toStop
+        ? [[fromStop.lat, fromStop.lng], [toStop.lat, toStop.lng]]
+        : null
+    )
+
+    if (!pts) return
 
     try {
-      const bounds = L.latLngBounds(pts.map(([lat, lng]) => L.latLng(lat, lng)))
+      const validPts = pts.filter(([lat, lng]) => !isNaN(lat) && !isNaN(lng))
+      if (validPts.length < 2) return
+      const bounds = L.latLngBounds(validPts.map(([lat, lng]) => L.latLng(lat, lng)))
       if (bounds.isValid()) map.flyToBounds(bounds, { padding: [40, 40], duration: 0.8 })
     } catch (e) {
       console.warn('flyToBounds error:', e)
@@ -99,12 +126,7 @@ export default function TripMap({ days, hotels, warningMarkers = [], selectedDay
 
   useEffect(() => {
     setSegments(null)
-    Promise.all(
-      routeStops.slice(0, -1).map((from, i) => fetchLeg(from, routeStops[i + 1]))
-    ).then((results) => {
-      const fallback = getFallback(routeStops)
-      setSegments(results.map((seg, i) => seg ?? fallback[i]))
-    })
+    fetchAllLegs(routeStops).then(setSegments)
   }, [routeStops])
 
   const displaySegments = segments ?? getFallback(routeStops)

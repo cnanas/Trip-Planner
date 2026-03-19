@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppShell from './components/layout/AppShell'
 import DBInit from './components/DBInit'
 import AuthGate, { isAuthed } from './components/AuthGate'
+import DrivePage from './pages/DrivePage'
 import ItineraryPage from './pages/ItineraryPage'
 import ExpensesPage from './pages/ExpensesPage'
 import ReceiptsPage from './pages/ReceiptsPage'
@@ -22,7 +23,8 @@ export default function App() {
       <DBInit />
       <Routes>
         <Route element={<AppShell />}>
-          <Route index element={<ItineraryPage />} />
+          <Route index element={<DrivePage />} />
+          <Route path="itinerary" element={<ItineraryPage />} />
           <Route path="summary" element={<SummaryPage />} />
           <Route path="expenses" element={<PrivateRoute><ExpensesPage /></PrivateRoute>} />
           <Route path="receipts" element={<PrivateRoute><ReceiptsPage /></PrivateRoute>} />
