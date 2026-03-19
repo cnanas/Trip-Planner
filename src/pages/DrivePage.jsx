@@ -38,30 +38,11 @@ function calcArrival(departureTime, hours) {
 }
 
 const FIND_AHEAD = [
-  { label: 'Gas',       icon: Fuel,             query: 'gas station', color: '#f97316' },
-  { label: 'Food',      icon: UtensilsCrossed,  query: 'restaurant',  color: '#22c55e' },
-  { label: 'Coffee',    icon: Coffee,           query: 'coffee shop', color: '#92400e' },
-  { label: 'Rest Area', icon: MapPin,           query: 'rest area',   color: '#3b82f6' },
+  { label: 'Gas',       icon: Fuel,             query: 'gas station near me', color: '#f97316' },
+  { label: 'Food',      icon: UtensilsCrossed,  query: 'restaurant near me',  color: '#22c55e' },
+  { label: 'Coffee',    icon: Coffee,           query: 'coffee shop near me', color: '#92400e' },
+  { label: 'Rest Area', icon: MapPin,           query: 'rest area near me',   color: '#3b82f6' },
 ]
-
-function openMaps(query) {
-  const fallback = () =>
-    window.open(`https://maps.google.com/maps?q=${encodeURIComponent(query + ' near me')}`, '_blank')
-
-  if (!navigator.geolocation) { fallback(); return }
-
-  navigator.geolocation.getCurrentPosition(
-    ({ coords }) => {
-      const { latitude: lat, longitude: lng } = coords
-      window.open(
-        `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lng},13z`,
-        '_blank'
-      )
-    },
-    fallback,
-    { timeout: 5000 }
-  )
-}
 
 const WARN_STYLE = {
   info:    { bg: '#f0f9ff', border: '#bae6fd', text: '#0369a1' },
@@ -210,14 +191,16 @@ export default function DrivePage() {
         <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2 px-1">Find Ahead</p>
         <div className="grid grid-cols-4 gap-2">
           {FIND_AHEAD.map(({ label, icon: Icon, query, color }) => (
-            <button
+            <a
               key={label}
-              onClick={() => openMaps(query)}
+              href={`https://maps.google.com/maps?q=${encodeURIComponent(query)}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-col items-center gap-1.5 bg-white border border-[#e2e8f0] rounded-2xl py-3 text-xs font-medium text-[#64748b] hover:border-[#f97316] hover:text-[#f97316] active:scale-95 transition-all"
             >
               <Icon size={20} style={{ color }} />
               {label}
-            </button>
+            </a>
           ))}
         </div>
       </div>
