@@ -20,7 +20,7 @@ export default function AppShell() {
             paddingBottom: 'calc(var(--tab-bar-height) + 16px)',
           }}
         >
-          <div className="h-full">
+          <div className="min-h-full">
             <Outlet />
           </div>
         </main>
