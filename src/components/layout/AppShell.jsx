@@ -17,7 +17,7 @@ export default function AppShell() {
           className="flex-1 overflow-y-auto bg-[#f8fafc]"
           style={{
             paddingTop: 'calc(var(--safe-top) + 52px)',
-            paddingBottom: 'calc(var(--tab-bar-height) + var(--safe-bottom) + 16px)',
+            paddingBottom: 'calc(var(--tab-bar-height) + 16px)',
           }}
         >
           <div className="h-full">
