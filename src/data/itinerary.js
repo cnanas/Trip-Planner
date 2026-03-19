@@ -271,42 +271,45 @@ export const WARNING_MARKERS = [
 ]
 
 export const ROUTE_WAYPOINTS = [
-  [42.4648, -72.5723],   // Sunderland, MA (Start)
-  [42.3601, -71.0589],   // Boston, MA
-  [42.1015, -72.5898],   // Springfield, MA
-  [42.6526, -73.7562],   // Albany, NY
-  [43.0481, -76.1474],   // Syracuse, NY
-  [42.8864, -78.8784],   // Buffalo, NY
-  [42.1292, -80.0851],   // Erie, PA
-  [41.4993, -81.6944],   // Cleveland, OH
-  [41.2988, -81.5170],   // Macedonia, OH (Hotel Night 1)
-  [41.6776, -83.5556],   // Toledo, OH
-  [41.8827, -87.6233],   // Chicago, IL ⚠️
-  [43.0731, -89.4012],   // Madison, WI
-  [43.0553, -89.4981],   // Madison West (Hotel Night 2)
-  [43.9695, -91.2396],   // La Crosse, WI
-  [44.0121, -92.4802],   // Rochester, MN
-  [43.5473, -96.7283],   // Sioux Falls, SD
-  [43.8861, -100.7163],  // Murdo, SD (Hotel Night 3)
-  [44.0805, -103.2310],  // Rapid City, SD
-  [44.2998, -105.5091],  // Gillette, WY ⛽
-  [44.7972, -106.9562],  // Sheridan, WY
-  [44.6,    -107.4000],  // Bighorn Mountains ⛰️
-  [45.7833, -108.5007],  // Billings, MT
-  [45.6658, -108.7690],  // Laurel, MT (Hotel Night 4)
-  [45.9999, -110.5267],  // Livingston, MT
-  [46.5958, -112.0270],  // Helena, MT
-  [46.8721, -113.9940],  // Missoula, MT
-  [47.6741, -116.7800],  // Coeur d'Alene, ID
-  [47.6588, -117.4260],  // Spokane, WA (Destination)
+  [42.4648, -72.5723],   // 0:  Sunderland, MA (Start)
+  [42.1015, -72.5898],   // 1:  Springfield, MA  — I-90 west on-ramp
+  [42.6526, -73.7562],   // 2:  Albany, NY
+  [43.0481, -76.1474],   // 3:  Syracuse, NY
+  [43.1548, -77.6158],   // 4:  Rochester, NY
+  [42.8864, -78.8784],   // 5:  Buffalo, NY
+  [42.4940, -79.3340],   // 6:  Dunkirk, NY      — Lake Erie south shore
+  [42.1292, -80.0851],   // 7:  Erie, PA
+  [41.4993, -81.6944],   // 8:  Cleveland, OH
+  [41.2988, -81.5170],   // 9:  Macedonia, OH    — Hotel Night 1
+  [41.6776, -83.5556],   // 10: Toledo, OH
+  [41.6764, -86.2520],   // 11: South Bend, IN   — I-90 Indiana Toll Road
+  [41.8827, -87.6233],   // 12: Chicago, IL
+  [42.2711, -89.0940],   // 13: Rockford, IL     — I-90 northwest of Chicago
+  [43.0731, -89.4012],   // 14: Madison, WI
+  [43.0553, -89.4981],   // 15: Madison West     — Hotel Night 2
+  [43.9695, -91.2396],   // 16: La Crosse, WI
+  [44.0121, -92.4802],   // 17: Rochester, MN
+  [43.5473, -96.7283],   // 18: Sioux Falls, SD
+  [43.8861, -100.7163],  // 19: Murdo, SD        — Hotel Night 3
+  [44.0805, -103.2310],  // 20: Rapid City, SD
+  [44.2998, -105.5091],  // 21: Gillette, WY
+  [44.7972, -106.9562],  // 22: Sheridan, WY
+  [44.6,    -107.4000],  // 23: Bighorn Mountains
+  [45.7833, -108.5007],  // 24: Billings, MT
+  [45.6658, -108.7690],  // 25: Laurel, MT       — Hotel Night 4
+  [45.9999, -110.5267],  // 26: Livingston, MT
+  [46.5958, -112.0270],  // 27: Helena, MT
+  [46.8721, -113.9940],  // 28: Missoula, MT
+  [47.6741, -116.7800],  // 29: Coeur d'Alene, ID
+  [47.6588, -117.4260],  // 30: Spokane, WA (Destination)
 ]
 
 export const DAY_SEGMENTS = {
-  1: [0, 8],
-  2: [8, 13],
-  3: [13, 16],
-  4: [16, 22],
-  5: [22, 27],
+  1: [0,  9],   // Sunderland → Macedonia OH
+  2: [9,  15],  // Macedonia  → Madison West
+  3: [15, 19],  // Madison    → Murdo SD
+  4: [19, 25],  // Murdo      → Laurel MT
+  5: [25, 30],  // Laurel     → Spokane
 }
 
 // ---------------------------------------------------------------------------
