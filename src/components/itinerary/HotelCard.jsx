@@ -1,4 +1,5 @@
 import { Phone, MapPin } from 'lucide-react'
+import WeatherBadge from '../WeatherBadge'
 
 const TAG_LABELS = {
   breakfast: 'Breakfast',
@@ -39,10 +40,11 @@ export default function HotelCard({ hotel }) {
   return (
     <div className="bg-[#f8fafc] rounded-2xl p-4 border border-[#e2e8f0]">
       <div className="flex items-start justify-between gap-2">
-        <div>
+        <div className="flex-1 min-w-0">
           <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-0.5">Tonight's Stay</p>
           <h3 className="text-sm font-semibold text-[#0f172a] leading-snug">{hotel.name}</h3>
         </div>
+        <WeatherBadge lat={hotel.lat} lng={hotel.lng} day={hotel.day} />
       </div>
 
       <div className="flex items-center gap-2 mt-2">
