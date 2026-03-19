@@ -58,6 +58,39 @@ const PHASES = [
     ],
   },
   {
+    id: 'phase-utilities',
+    title: 'Utilities & Insurance',
+    subtitle: 'Set up new, shut down old',
+    accent: '#8b5cf6',
+    accentBg: '#f5f3ff',
+    items: [
+      {
+        id: 'u1',
+        title: 'New Apartment — Set up electricity',
+        note: 'Contact the Spokane utility provider to establish service at your new address before or shortly after arrival.',
+        tag: { label: 'New Apartment', type: 'action' },
+      },
+      {
+        id: 'u2',
+        title: 'New Apartment — Set up renters insurance',
+        note: 'Get a renters insurance policy for the Spokane apartment. Many providers (Lemonade, State Farm, etc.) let you start same-day online.',
+        tag: { label: 'New Apartment', type: 'action' },
+      },
+      {
+        id: 'u3',
+        title: 'Current Apartment — Shut down electricity',
+        note: 'Call or go online to cancel/transfer your Sunderland electricity service. Set the end date to your move-out day.',
+        tag: { label: 'Current Apartment', type: 'deadline' },
+      },
+      {
+        id: 'u4',
+        title: 'Current Apartment — Cancel renters insurance',
+        note: 'Contact your current renters insurance provider to cancel your policy effective your move-out date. You may be owed a prorated refund.',
+        tag: { label: 'Current Apartment', type: 'money' },
+      },
+    ],
+  },
+  {
     id: 'phase2',
     title: 'The Drive',
     subtitle: '5-day route along I-90 West · Sun Mar 23 → ~Fri Mar 28',
