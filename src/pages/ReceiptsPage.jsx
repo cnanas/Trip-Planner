@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Upload, X, FileText } from 'lucide-react'
 import { useReceiptStore } from '../store/receiptStore'
 
@@ -9,27 +9,15 @@ function formatBytes(n) {
 }
 
 function ReceiptCard({ receipt }) {
-  const { deleteReceipt, getObjectUrl } = useReceiptStore()
-  const [url, setUrl] = useState(null)
+  const { deleteReceipt, getReceiptUrl } = useReceiptStore()
   const [lightbox, setLightbox] = useState(false)
   const isImage = receipt.mimeType?.startsWith('image/')
-
-  useEffect(() => {
-    if (!isImage) return
-    let objectUrl
-    getObjectUrl(receipt.id).then((u) => {
-      objectUrl = u
-      setUrl(u)
-    })
-    return () => {
-      if (objectUrl) URL.revokeObjectURL(objectUrl)
-    }
-  }, [receipt.id, isImage])
+  const url = getReceiptUrl(receipt.id)
 
   return (
     <>
       <div className="relative group bg-white rounded-2xl overflow-hidden border border-[#e2e8f0] shadow-sm">
-        {isImage && url ? (
+        {isImage ? (
           <button className="block w-full" onClick={() => setLightbox(true)}>
             <img
               src={url}
@@ -56,7 +44,7 @@ function ReceiptCard({ receipt }) {
         </button>
       </div>
 
-      {lightbox && url && (
+      {lightbox && isImage && (
         <div
           className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
           onClick={() => setLightbox(false)}
@@ -103,7 +91,6 @@ export default function ReceiptsPage() {
 
   return (
     <div className="flex flex-col min-h-full px-4 pt-4 pb-8">
-      {/* Upload zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}
@@ -138,7 +125,6 @@ export default function ReceiptsPage() {
         />
       </div>
 
-      {/* Receipt grid */}
       {receipts.length > 0 ? (
         <div className="mt-6">
           <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-3">

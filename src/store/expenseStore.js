@@ -1,6 +1,10 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { DEFAULT_BUDGET } from '../data/itinerary'
+import { loadState, saveState } from '../lib/db'
+
+const sync = (get) =>
+  saveState('expenses', { expenses: get().expenses, budget: get().budget })
 
 export const useExpenseStore = create(
   persist(
@@ -8,18 +12,35 @@ export const useExpenseStore = create(
       expenses: [],
       budget: DEFAULT_BUDGET,
 
-      addExpense: (expense) =>
-        set(state => ({ expenses: [expense, ...state.expenses] })),
+      init: async () => {
+        const data = await loadState('expenses')
+        if (data) set({
+          expenses: data.expenses ?? [],
+          budget: data.budget ?? DEFAULT_BUDGET,
+        })
+      },
 
-      updateExpense: (id, updates) =>
-        set(state => ({
-          expenses: state.expenses.map(e => e.id === id ? { ...e, ...updates } : e),
-        })),
+      addExpense: (expense) => {
+        set((state) => ({ expenses: [expense, ...state.expenses] }))
+        sync(get)
+      },
 
-      deleteExpense: (id) =>
-        set(state => ({ expenses: state.expenses.filter(e => e.id !== id) })),
+      updateExpense: (id, updates) => {
+        set((state) => ({
+          expenses: state.expenses.map((e) => e.id === id ? { ...e, ...updates } : e),
+        }))
+        sync(get)
+      },
 
-      setBudget: (budget) => set({ budget }),
+      deleteExpense: (id) => {
+        set((state) => ({ expenses: state.expenses.filter((e) => e.id !== id) }))
+        sync(get)
+      },
+
+      setBudget: (budget) => {
+        set({ budget })
+        sync(get)
+      },
 
       getTotals: () => {
         const { expenses } = get()
@@ -35,8 +56,8 @@ export const useExpenseStore = create(
           total: expenses.reduce((sum, e) => sum + e.amount, 0),
           byDay,
           byCategory,
-          estimated: expenses.filter(e => e.isEstimate).reduce((sum, e) => sum + e.amount, 0),
-          actual: expenses.filter(e => !e.isEstimate).reduce((sum, e) => sum + e.amount, 0),
+          estimated: expenses.filter((e) => e.isEstimate).reduce((sum, e) => sum + e.amount, 0),
+          actual: expenses.filter((e) => !e.isEstimate).reduce((sum, e) => sum + e.amount, 0),
         }
       },
     }),
