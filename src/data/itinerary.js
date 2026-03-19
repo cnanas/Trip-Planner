@@ -272,44 +272,50 @@ export const WARNING_MARKERS = [
 
 export const ROUTE_WAYPOINTS = [
   [42.4648, -72.5723],   // 0:  Sunderland, MA (Start)
-  [42.1015, -72.5898],   // 1:  Springfield, MA  — I-90 west on-ramp
+  [42.1015, -72.5898],   // 1:  Springfield, MA
   [42.6526, -73.7562],   // 2:  Albany, NY
   [43.0481, -76.1474],   // 3:  Syracuse, NY
   [43.1548, -77.6158],   // 4:  Rochester, NY
   [42.8864, -78.8784],   // 5:  Buffalo, NY
-  [42.4940, -79.3340],   // 6:  Dunkirk, NY      — Lake Erie south shore
-  [42.1292, -80.0851],   // 7:  Erie, PA
-  [41.4993, -81.6944],   // 8:  Cleveland, OH
-  [41.2988, -81.5170],   // 9:  Macedonia, OH    — Hotel Night 1
-  [41.6776, -83.5556],   // 10: Toledo, OH
-  [41.6764, -86.2520],   // 11: South Bend, IN   — I-90 Indiana Toll Road
-  [41.8827, -87.6233],   // 12: Chicago, IL
-  [42.2711, -89.0940],   // 13: Rockford, IL     — I-90 northwest of Chicago
-  [43.0731, -89.4012],   // 14: Madison, WI
-  [43.0553, -89.4981],   // 15: Madison West     — Hotel Night 2
-  [43.9695, -91.2396],   // 16: La Crosse, WI
-  [44.0121, -92.4802],   // 17: Rochester, MN
-  [43.5473, -96.7283],   // 18: Sioux Falls, SD
-  [43.8861, -100.7163],  // 19: Murdo, SD        — Hotel Night 3
-  [44.0805, -103.2310],  // 20: Rapid City, SD
-  [44.2998, -105.5091],  // 21: Gillette, WY
-  [44.7972, -106.9562],  // 22: Sheridan, WY
-  [44.6,    -107.4000],  // 23: Bighorn Mountains
-  [45.7833, -108.5007],  // 24: Billings, MT
-  [45.6658, -108.7690],  // 25: Laurel, MT       — Hotel Night 4
-  [45.9999, -110.5267],  // 26: Livingston, MT
-  [46.5958, -112.0270],  // 27: Helena, MT
-  [46.8721, -113.9940],  // 28: Missoula, MT
-  [47.6741, -116.7800],  // 29: Coeur d'Alene, ID
-  [47.6588, -117.4260],  // 30: Spokane, WA (Destination)
+  // I-90 follows Lake Erie's south shore — add points so the polyline
+  // goes SOUTH first from Buffalo before heading west, not across the lake
+  [42.7156, -78.8296],   // 6:  Hamburg, NY       — first exit south of Buffalo on I-90
+  [42.6401, -79.0233],   // 7:  Angola, NY        — south shore of Lake Erie
+  [42.4940, -79.3340],   // 8:  Dunkirk, NY       — south shore of Lake Erie
+  [42.3267, -79.5760],   // 9:  Westfield, NY     — south shore of Lake Erie
+  [42.1292, -80.0851],   // 10: Erie, PA
+  [41.9497, -80.5553],   // 11: Conneaut, OH      — keeps line south of lake to Cleveland
+  [41.4993, -81.6944],   // 12: Cleveland, OH
+  [41.2988, -81.5170],   // 13: Macedonia, OH     — Hotel Night 1
+  [41.6776, -83.5556],   // 14: Toledo, OH
+  [41.6764, -86.2520],   // 15: South Bend, IN    — I-90 Indiana Toll Road
+  [41.8827, -87.6233],   // 16: Chicago, IL
+  [42.2711, -89.0940],   // 17: Rockford, IL      — I-90 northwest of Chicago
+  [43.0731, -89.4012],   // 18: Madison, WI
+  [43.0553, -89.4981],   // 19: Madison West      — Hotel Night 2
+  [43.9695, -91.2396],   // 20: La Crosse, WI
+  [44.0121, -92.4802],   // 21: Rochester, MN
+  [43.5473, -96.7283],   // 22: Sioux Falls, SD
+  [43.8861, -100.7163],  // 23: Murdo, SD         — Hotel Night 3
+  [44.0805, -103.2310],  // 24: Rapid City, SD
+  [44.2998, -105.5091],  // 25: Gillette, WY
+  [44.7972, -106.9562],  // 26: Sheridan, WY
+  [44.6,    -107.4000],  // 27: Bighorn Mountains
+  [45.7833, -108.5007],  // 28: Billings, MT
+  [45.6658, -108.7690],  // 29: Laurel, MT        — Hotel Night 4
+  [45.9999, -110.5267],  // 30: Livingston, MT
+  [46.5958, -112.0270],  // 31: Helena, MT
+  [46.8721, -113.9940],  // 32: Missoula, MT
+  [47.6741, -116.7800],  // 33: Coeur d'Alene, ID
+  [47.6588, -117.4260],  // 34: Spokane, WA (Destination)
 ]
 
 export const DAY_SEGMENTS = {
-  1: [0,  9],   // Sunderland → Macedonia OH
-  2: [9,  15],  // Macedonia  → Madison West
-  3: [15, 19],  // Madison    → Murdo SD
-  4: [19, 25],  // Murdo      → Laurel MT
-  5: [25, 30],  // Laurel     → Spokane
+  1: [0,  13],  // Sunderland → Macedonia OH
+  2: [13, 19],  // Macedonia  → Madison West
+  3: [19, 23],  // Madison    → Murdo SD
+  4: [23, 29],  // Murdo      → Laurel MT
+  5: [29, 34],  // Laurel     → Spokane
 }
 
 // ---------------------------------------------------------------------------
