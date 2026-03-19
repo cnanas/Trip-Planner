@@ -6,11 +6,12 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   if (req.method === 'OPTIONS') return res.status(200).end()
 
-  if (!process.env.DATABASE_URL) {
+  const dbUrl = process.env.trip_DATABASE_URL || process.env.trip_POSTGRES_URL
+  if (!dbUrl) {
     return res.status(503).json({ error: 'Database not configured' })
   }
 
-  const sql = neon(process.env.DATABASE_URL)
+  const sql = neon(dbUrl)
 
   try {
     if (req.method === 'GET') {
