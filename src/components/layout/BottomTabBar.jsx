@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom'
-import { Map, CreditCard, ScanLine, BookOpen, BarChart2 } from 'lucide-react'
+import { Map, CreditCard, ScanLine, BookOpen, BarChart2, ClipboardList } from 'lucide-react'
 
 const TABS = [
-  { to: '/',         Icon: Map,        label: 'Itinerary' },
-  { to: '/expenses', Icon: CreditCard, label: 'Expenses'  },
-  { to: '/receipts', Icon: ScanLine,   label: 'Receipts'  },
-  { to: '/journal',  Icon: BookOpen,   label: 'Journal'   },
-  { to: '/summary',  Icon: BarChart2,  label: 'Summary'   },
+  { to: '/',          Icon: Map,           label: 'Itinerary' },
+  { to: '/expenses',  Icon: CreditCard,    label: 'Expenses'  },
+  { to: '/receipts',  Icon: ScanLine,      label: 'Receipts'  },
+  { to: '/journal',   Icon: BookOpen,      label: 'Journal'   },
+  { to: '/summary',   Icon: BarChart2,     label: 'Summary'   },
+  { to: '/checklist', Icon: ClipboardList, label: 'Checklist' },
 ]
 
 export default function BottomTabBar() {

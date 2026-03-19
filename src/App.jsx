@@ -5,6 +5,7 @@ import ExpensesPage from './pages/ExpensesPage'
 import ReceiptsPage from './pages/ReceiptsPage'
 import JournalPage from './pages/JournalPage'
 import SummaryPage from './pages/SummaryPage'
+import ChecklistPage from './pages/ChecklistPage'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="receipts" element={<ReceiptsPage />} />
           <Route path="journal" element={<JournalPage />} />
           <Route path="summary" element={<SummaryPage />} />
+          <Route path="checklist" element={<ChecklistPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
