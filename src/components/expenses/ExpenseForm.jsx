@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import { X } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { X, Camera, ImageIcon } from 'lucide-react'
 import { useExpenseStore } from '../../store/expenseStore'
+import { useReceiptStore } from '../../store/receiptStore'
 import { EXPENSE_CATEGORIES } from '../../data/itinerary'
 
 function generateId() {
@@ -9,6 +10,8 @@ function generateId() {
 
 export default function ExpenseForm({ onClose }) {
   const { addExpense } = useExpenseStore()
+  const { addReceipt } = useReceiptStore()
+
   const [form, setForm] = useState({
     category: 'fuel',
     amount: '',
@@ -16,9 +19,29 @@ export default function ExpenseForm({ onClose }) {
     description: '',
     day: '',
     isEstimate: false,
+    receiptId: null,
   })
+  const [preview, setPreview] = useState(null)
+  const [uploading, setUploading] = useState(false)
+
+  const cameraRef = useRef(null)
+  const fileRef = useRef(null)
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
+
+  const handleFile = async (file) => {
+    if (!file) return
+    setUploading(true)
+    setPreview(URL.createObjectURL(file))
+    const id = await addReceipt(file)
+    setForm(f => ({ ...f, receiptId: id }))
+    setUploading(false)
+  }
+
+  const removeReceipt = () => {
+    setPreview(null)
+    setForm(f => ({ ...f, receiptId: null }))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -30,7 +53,7 @@ export default function ExpenseForm({ onClose }) {
       amount: parseFloat(parseFloat(form.amount).toFixed(2)),
       description: form.description,
       merchant: form.merchant,
-      receiptId: null,
+      receiptId: form.receiptId,
       timestamp: new Date().toISOString(),
       isEstimate: form.isEstimate,
     })
@@ -125,6 +148,60 @@ export default function ExpenseForm({ onClose }) {
             </div>
           </div>
 
+          {/* Receipt */}
+          <div>
+            <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2">Receipt</label>
+            {preview ? (
+              <div className="relative inline-flex">
+                <img
+                  src={preview}
+                  alt="Receipt preview"
+                  className={`h-28 w-auto rounded-xl object-cover border border-[#e2e8f0] ${uploading ? 'opacity-50' : ''}`}
+                />
+                {uploading && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-xs text-[#64748b] font-medium">Saving...</span>
+                  </div>
+                )}
+                {!uploading && (
+                  <button
+                    type="button"
+                    onClick={removeReceipt}
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-white border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-[#ef4444] shadow-sm transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <label className="flex-1 flex flex-col items-center justify-center gap-1.5 py-4 rounded-xl border border-dashed border-[#e2e8f0] bg-[#f8fafc] text-xs text-[#64748b] cursor-pointer hover:border-[#f97316] hover:text-[#f97316] transition-colors">
+                  <Camera size={18} />
+                  Take Photo
+                  <input
+                    ref={cameraRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={e => handleFile(e.target.files[0])}
+                  />
+                </label>
+                <label className="flex-1 flex flex-col items-center justify-center gap-1.5 py-4 rounded-xl border border-dashed border-[#e2e8f0] bg-[#f8fafc] text-xs text-[#64748b] cursor-pointer hover:border-[#f97316] hover:text-[#f97316] transition-colors">
+                  <ImageIcon size={18} />
+                  Upload
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*,application/pdf"
+                    className="hidden"
+                    onChange={e => handleFile(e.target.files[0])}
+                  />
+                </label>
+              </div>
+            )}
+          </div>
+
           {/* Estimate toggle */}
           <label className="flex items-center gap-3 cursor-pointer">
             <div
@@ -138,7 +215,8 @@ export default function ExpenseForm({ onClose }) {
 
           <button
             type="submit"
-            className="w-full bg-[#f97316] hover:bg-[#ea6c0e] text-white font-semibold rounded-2xl py-3.5 transition-colors text-base"
+            disabled={uploading}
+            className="w-full bg-[#f97316] hover:bg-[#ea6c0e] disabled:opacity-50 text-white font-semibold rounded-2xl py-3.5 transition-colors text-base"
           >
             Add Expense
           </button>
