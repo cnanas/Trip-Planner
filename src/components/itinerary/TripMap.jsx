@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { STOPS_A } from '../../data/itinerary'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -10,25 +11,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 })
 
-// Exact stops from the Google Maps route link
-const STOPS = [
-  { lat: 42.4522173, lng: -72.5619936 }, // Day 1 start — Sunderland MA
-  { lat: 41.2987988, lng: -81.5169169 }, // Night 1 — Macedonia OH
-  { lat: 43.0553039, lng: -89.4981396 }, // Night 2 — Madison WI
-  { lat: 43.8858111, lng: -100.7157327 }, // Night 3 — Murdo SD
-  { lat: 45.6656876, lng: -108.7690678 }, // Night 4 — Laurel MT
-  { lat: 47.6770356, lng: -117.2302398 }, // Destination — Spokane Valley WA
-]
-
 const GOOGLE_MAPS_URL = 'https://maps.app.goo.gl/XYHsh2sXKodcyeMB8'
 
-// Fallback: straight line between each pair of stops
-const FALLBACK_SEGMENTS = STOPS.slice(0, -1).map((from, i) => {
-  const to = STOPS[i + 1]
-  return [[from.lat, from.lng], [to.lat, to.lng]]
-})
+function getFallback(stops) {
+  return stops.slice(0, -1).map((from, i) => {
+    const to = stops[i + 1]
+    return [[from.lat, from.lng], [to.lat, to.lng]]
+  })
+}
 
 async function fetchLeg(from, to) {
+  // eslint-disable-next-line no-unused-vars
   const coords = `${from.lng},${from.lat};${to.lng},${to.lat}`
   try {
     const res = await fetch(
@@ -72,7 +65,7 @@ const warningIcon = () => divIcon(`
 
 // ── Map controller: fly to selected day's bounds ───────────────────────────────
 
-function MapController({ selectedDay, segments }) {
+function MapController({ selectedDay, segments, stops }) {
   const map = useMap()
   const prev = useRef(null)
 
@@ -82,8 +75,8 @@ function MapController({ selectedDay, segments }) {
 
     const seg = segments?.[selectedDay - 1]
     const pts = seg?.length >= 2 ? seg : [
-      [STOPS[selectedDay - 1].lat, STOPS[selectedDay - 1].lng],
-      [STOPS[selectedDay].lat, STOPS[selectedDay].lng],
+      [stops[selectedDay - 1].lat, stops[selectedDay - 1].lng],
+      [stops[selectedDay].lat, stops[selectedDay].lng],
     ]
 
     try {
@@ -99,21 +92,22 @@ function MapController({ selectedDay, segments }) {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export default function TripMap({ days, hotels, warningMarkers = [], selectedDayNumber, onHotelClick, height = '100%' }) {
+export default function TripMap({ days, hotels, warningMarkers = [], selectedDayNumber, onHotelClick, height = '100%', routeStops = STOPS_A }) {
   const [segments, setSegments] = useState(null)
   const start = days[0].from
   const end = days[days.length - 1].to
 
   useEffect(() => {
+    setSegments(null)
     Promise.all(
-      STOPS.slice(0, -1).map((from, i) => fetchLeg(from, STOPS[i + 1]))
+      routeStops.slice(0, -1).map((from, i) => fetchLeg(from, routeStops[i + 1]))
     ).then((results) => {
-      // Use fetched geometry if available, otherwise fall back to straight line
-      setSegments(results.map((seg, i) => seg ?? FALLBACK_SEGMENTS[i]))
+      const fallback = getFallback(routeStops)
+      setSegments(results.map((seg, i) => seg ?? fallback[i]))
     })
-  }, [])
+  }, [routeStops])
 
-  const displaySegments = segments ?? FALLBACK_SEGMENTS
+  const displaySegments = segments ?? getFallback(routeStops)
 
   const getColor = (dayNum) => {
     if (!selectedDayNumber) return '#f97316'
@@ -187,7 +181,7 @@ export default function TripMap({ days, hotels, warningMarkers = [], selectedDay
           </Marker>
         ))}
 
-        <MapController selectedDay={selectedDayNumber} segments={segments} />
+        <MapController selectedDay={selectedDayNumber} segments={segments} stops={routeStops} />
       </MapContainer>
 
       {/* Google Maps button */}

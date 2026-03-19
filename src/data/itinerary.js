@@ -341,6 +341,182 @@ export const STOPS = [
 ]
 
 // ---------------------------------------------------------------------------
+// MAP ROUTE STOPS (used by TripMap for OSRM routing)
+// ---------------------------------------------------------------------------
+
+export const STOPS_A = [
+  { lat: 42.4522, lng: -72.5620 },  // Sunderland MA
+  { lat: 41.2988, lng: -81.5170 },  // Macedonia OH  (Night 1)
+  { lat: 43.0553, lng: -89.4981 },  // Madison WI    (Night 2)
+  { lat: 43.8861, lng: -100.7163 }, // Murdo SD      (Night 3)
+  { lat: 45.6658, lng: -108.7690 }, // Laurel MT     (Night 4)
+  { lat: 47.6770, lng: -117.2302 }, // Spokane WA
+]
+
+export const STOPS_B = [
+  { lat: 42.4522, lng: -72.5620 },  // Sunderland MA
+  { lat: 41.5662, lng: -83.6490 },  // Maumee OH (Hampton Inn Toledo-South)
+  { lat: 43.8058, lng: -91.2612 },  // La Crosse WI (Gundersen Hotel)
+  { lat: 44.0700, lng: -103.1950 }, // Rapid City SD (Hampton Inn Rushmore)
+  { lat: 46.8602, lng: -113.9776 }, // Missoula MT (Comfort Inn Near University)
+  { lat: 47.6770, lng: -117.2302 }, // Spokane WA
+]
+
+// ---------------------------------------------------------------------------
+// PLAN B — "Push Hard" (extra hour/day → short Day 5)
+// ---------------------------------------------------------------------------
+
+export const DAYS_B = [
+  {
+    number: 1,
+    from: { name: "Sunderland, MA", lat: 42.4648, lng: -72.5723, state: "MA" },
+    to:   { name: "Maumee, OH",     lat: 41.5662, lng: -83.6490, state: "OH" },
+    miles: 605,
+    estimatedHours: 10.5,
+    departureTime: "05:30",
+    hotelId: "hotel-b1",
+    warnings: [
+      { id: "b-warn-1-1", day: 1, type: "toll", severity: "info",    message: "New York Thruway tolls (~$20–30 depending on exits)", icon: "🛣️" },
+      { id: "b-warn-1-2", day: 1, type: "toll", severity: "info",    message: "Ohio Turnpike tolls (~$10–15)", icon: "🛣️" },
+      { id: "b-warn-1-3", day: 1, type: "info", severity: "caution", message: "Longest day of the trip — early start recommended.", icon: "⏰" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 2,
+    from: { name: "Toledo, OH",    lat: 41.6639, lng: -83.5553, state: "OH" },
+    to:   { name: "La Crosse, WI", lat: 43.8014, lng: -91.2397, state: "WI" },
+    miles: 555,
+    estimatedHours: 9.5,
+    departureTime: "06:00",
+    hotelId: "hotel-b2",
+    warnings: [
+      { id: "b-warn-2-1", day: 2, type: "traffic", severity: "warning", message: "Chicago metro — aim to pass through before 7 AM or after 9 AM. Rush hour with a UHaul + trailer can cost 2+ hours.", icon: "⚠️" },
+      { id: "b-warn-2-2", day: 2, type: "toll",    severity: "info",    message: "Illinois Tollway (~$5)", icon: "🛣️" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 3,
+    from: { name: "La Crosse, WI",  lat: 43.8014, lng: -91.2397,  state: "WI" },
+    to:   { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
+    miles: 600,
+    estimatedHours: 10.0,
+    departureTime: "06:00",
+    hotelId: "hotel-b3",
+    warnings: [
+      { id: "b-warn-3-1", day: 3, type: "fuel", severity: "caution", message: "Gas stations become sparse past Sioux Falls. Fill up before leaving the city.", icon: "⛽" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 4,
+    from: { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
+    to:   { name: "Missoula, MT",   lat: 46.8721, lng: -113.9940, state: "MT" },
+    miles: 530,
+    estimatedHours: 9.0,
+    departureTime: "06:00",
+    hotelId: "hotel-b4",
+    warnings: [
+      { id: "b-warn-4-1", day: 4, type: "fuel",      severity: "caution", message: "Long fuel gaps past Rapid City into Wyoming. Keep tank above half at all times.", icon: "⛽" },
+      { id: "b-warn-4-2", day: 4, type: "elevation", severity: "caution", message: "Bighorn Mountains near Sheridan, WY reach ~8,000 ft. Take grades slow with trailer.", icon: "⛰️" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 5,
+    from: { name: "Missoula, MT", lat: 46.8721, lng: -113.9940, state: "MT" },
+    to:   { name: "Spokane, WA",  lat: 47.6588, lng: -117.426,  state: "WA" },
+    miles: 195,
+    estimatedHours: 3.5,
+    departureTime: "08:30",
+    hotelId: null,
+    warnings: [],
+    note: "Easy final morning — arrive by noon and start settling in!",
+    completed: false,
+  },
+]
+
+export const HOTELS_B = [
+  {
+    id: "hotel-b1",
+    day: 1,
+    name: "Hampton Inn Toledo-South/Maumee",
+    address: "1409 Reynolds Rd, Maumee, OH 43537",
+    lat: 41.5662,
+    lng: -83.6490,
+    rating: 4.4,
+    ratingCount: 900,
+    petFriendly: true,
+    petNotes: "2 pets up to 75 lbs each. $75 pet fee (1–4 nights). Grassy pet relief area on property.",
+    phone: "+14198931004",
+    chains: ["Hampton Inn", "Hilton"],
+    tags: ["breakfast", "dog-friendly", "highway-access", "pool"],
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
+    websiteUrl: null,
+  },
+  {
+    id: "hotel-b2",
+    day: 2,
+    name: "Gundersen Hotel & Suites",
+    address: "1520 Clinic Court, La Crosse, WI 54601",
+    lat: 43.8058,
+    lng: -91.2612,
+    rating: 4.0,
+    ratingCount: 167,
+    petFriendly: true,
+    petNotes: "Dogs & cats welcome with NO pet fee. Food & water bowls at front desk, dog bones on arrival. Grassy pet relief area. Confirm 2-dog policy when booking.",
+    phone: "+16087930200",
+    chains: [],
+    tags: ["breakfast", "dog-friendly", "highway-access", "pool"],
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
+    websiteUrl: null,
+  },
+  {
+    id: "hotel-b3",
+    day: 3,
+    name: "Hampton Inn & Suites Rapid City Rushmore",
+    address: "825 Eglin St, Rapid City, SD 57701",
+    lat: 44.0700,
+    lng: -103.1950,
+    rating: 4.1,
+    ratingCount: 203,
+    petFriendly: true,
+    petNotes: "2 pets up to 75 lbs each. $50 pet fee (1–4 nights). Call ahead same day to confirm pet room availability.",
+    phone: "+16053411879",
+    chains: ["Hampton Inn", "Hilton"],
+    tags: ["breakfast", "dog-friendly", "highway-access", "pool"],
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
+    websiteUrl: null,
+  },
+  {
+    id: "hotel-b4",
+    day: 4,
+    name: "Comfort Inn Missoula Near University",
+    address: "1021 East Broadway, Missoula, MT 59802",
+    lat: 46.8602,
+    lng: -113.9776,
+    rating: 4.4,
+    ratingCount: 4420,
+    petFriendly: true,
+    petNotes: "2 pets up to 80 lbs each. $25/night pet fee (max $100/stay). Treats at check-in, pet relief area on property. Pets may not be left unattended in rooms.",
+    phone: "+14063177957",
+    chains: ["Comfort Inn", "Choice Hotels"],
+    tags: ["breakfast", "dog-friendly", "highway-access", "highly-rated"],
+    checkInTime: "16:00",
+    checkOutTime: "11:00",
+    websiteUrl: null,
+  },
+]
+
+// ---------------------------------------------------------------------------
 // EXPENSE / BUDGET
 // ---------------------------------------------------------------------------
 
