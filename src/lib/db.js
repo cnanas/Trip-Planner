@@ -9,9 +9,9 @@ export async function loadState(key) {
 }
 
 export function saveState(key, data) {
-  fetch('/api/sync', {
+  fetch(`/api/sync?key=${key}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ key, data }),
+    body: JSON.stringify({ data }),
   }).catch((e) => console.warn('[db] sync failed:', e))
 }
