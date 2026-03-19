@@ -1,12 +1,20 @@
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppShell from './components/layout/AppShell'
 import DBInit from './components/DBInit'
+import AuthGate, { isAuthed } from './components/AuthGate'
 import ItineraryPage from './pages/ItineraryPage'
 import ExpensesPage from './pages/ExpensesPage'
 import ReceiptsPage from './pages/ReceiptsPage'
 import JournalPage from './pages/JournalPage'
 import SummaryPage from './pages/SummaryPage'
 import ChecklistPage from './pages/ChecklistPage'
+
+function PrivateRoute({ children }) {
+  const [authed, setAuthed] = useState(isAuthed)
+  if (!authed) return <AuthGate onAuth={() => setAuthed(true)} />
+  return children
+}
 
 export default function App() {
   return (
@@ -15,11 +23,11 @@ export default function App() {
       <Routes>
         <Route element={<AppShell />}>
           <Route index element={<ItineraryPage />} />
-          <Route path="expenses" element={<ExpensesPage />} />
-          <Route path="receipts" element={<ReceiptsPage />} />
-          <Route path="journal" element={<JournalPage />} />
           <Route path="summary" element={<SummaryPage />} />
-          <Route path="checklist" element={<ChecklistPage />} />
+          <Route path="expenses" element={<PrivateRoute><ExpensesPage /></PrivateRoute>} />
+          <Route path="receipts" element={<PrivateRoute><ReceiptsPage /></PrivateRoute>} />
+          <Route path="journal" element={<PrivateRoute><JournalPage /></PrivateRoute>} />
+          <Route path="checklist" element={<PrivateRoute><ChecklistPage /></PrivateRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

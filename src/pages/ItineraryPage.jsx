@@ -7,7 +7,7 @@ const TripMap = lazy(() => import('../components/itinerary/TripMap'))
 
 export default function ItineraryPage() {
   const [selectedDay, setSelectedDay] = useState(null)
-  const [mapExpanded, setMapExpanded] = useState(false)
+  const [mapExpanded, setMapExpanded] = useState(true)
 
   const handleDaySelect = (dayNum) => {
     setSelectedDay(dayNum)
