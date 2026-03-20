@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
-  Phone, ChevronLeft, ChevronRight, Navigation, AlertTriangle, Pencil,
+  Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Pencil,
 } from 'lucide-react'
 import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
@@ -57,6 +57,103 @@ const WARN_STYLE = {
   info:    { bg: '#f0f9ff', border: '#bae6fd', text: '#0369a1' },
   warning: { bg: '#fffbeb', border: '#fde68a', text: '#92400e' },
   caution: { bg: '#fff7ed', border: '#fed7aa', text: '#c2410c' },
+}
+
+const EMERGENCY_NUMBERS = [
+  {
+    id: 'uhaul',
+    label: 'UHaul Roadside Assistance',
+    badge: '24/7',
+    phone: '18005280355',
+    phoneDisplay: '1-800-528-0355',
+    notes: [
+      'For flat tires, breakdowns, or getting stuck.',
+      'Have your contract number and exact location ready.',
+      'Avg. wait time after claim: ~2–2.5 hrs — plan ahead in remote areas.',
+    ],
+    extra: 'Also: UHaul app or uhaul.com/help to submit photos and track your request.',
+  },
+  {
+    id: 'leasing',
+    label: 'Leasing Office',
+    badge: null,
+    phone: '5097693877',
+    phoneDisplay: '509-769-3877',
+    notes: [],
+    extra: null,
+  },
+]
+
+function EmergencyNumbers() {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div className="rounded-2xl border border-[#fecaca] overflow-hidden" style={{ background: '#fff5f5' }}>
+      {/* Header row */}
+      <button
+        onClick={() => setExpanded(v => !v)}
+        className="w-full flex items-center gap-2.5 px-4 py-3"
+      >
+        <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#ef4444' }}>
+          <PhoneCall size={13} className="text-white" />
+        </div>
+        <span className="text-sm font-semibold text-[#0f172a] flex-1 text-left">Emergency Numbers</span>
+        <ChevronDown
+          size={16}
+          className="text-[#94a3b8] transition-transform duration-200 shrink-0"
+          style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        />
+      </button>
+
+      {/* Always-visible call buttons */}
+      <div className="px-4 pb-3 flex flex-col gap-2">
+        {EMERGENCY_NUMBERS.map(item => (
+          <a
+            key={item.id}
+            href={`tel:${item.phone}`}
+            className="flex items-center gap-3 bg-white rounded-xl px-3 py-2.5 border border-[#fecaca] active:scale-[0.98] transition-transform"
+          >
+            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: '#fef2f2' }}>
+              <Phone size={14} style={{ color: '#ef4444' }} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-xs font-semibold text-[#0f172a]">{item.label}</span>
+                {item.badge && (
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: '#ef4444', color: '#fff' }}>
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+              <span className="font-mono text-sm font-bold" style={{ color: '#ef4444' }}>{item.phoneDisplay}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {/* Expandable notes */}
+      {expanded && (
+        <div className="px-4 pb-4 space-y-3 border-t border-[#fecaca] pt-3">
+          {EMERGENCY_NUMBERS.filter(n => n.notes.length > 0 || n.extra).map(item => (
+            <div key={item.id}>
+              <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-1.5">{item.label}</p>
+              <ul className="space-y-1">
+                {item.notes.map((note, i) => (
+                  <li key={i} className="flex items-start gap-1.5 text-xs text-[#64748b]">
+                    <span className="mt-0.5 shrink-0" style={{ color: '#ef4444' }}>•</span>
+                    {note}
+                  </li>
+                ))}
+              </ul>
+              {item.extra && (
+                <p className="text-xs text-[#94a3b8] mt-1.5 italic">{item.extra}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function DrivePage() {
@@ -239,6 +336,9 @@ export default function DrivePage() {
           {day.note}
         </div>
       ) : null}
+
+      {/* Emergency Numbers */}
+      <EmergencyNumbers />
 
     </div>
   )
