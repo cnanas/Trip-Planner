@@ -1,9 +1,11 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import TopBar from './TopBar'
 import Sidebar from './Sidebar'
 import BottomTabBar from './BottomTabBar'
 
 export default function AppShell() {
+  const location = useLocation()
+
   return (
     <div className="flex h-full bg-white">
       <Sidebar />
@@ -20,7 +22,7 @@ export default function AppShell() {
             paddingBottom: 'calc(var(--tab-bar-height) + 16px)',
           }}
         >
-          <div className="min-h-full">
+          <div key={location.pathname} className="page-enter min-h-full">
             <Outlet />
           </div>
         </main>

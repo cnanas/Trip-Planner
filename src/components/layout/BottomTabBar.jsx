@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { Navigation, Map, CreditCard, ScanLine, BookOpen, BarChart2, ClipboardList } from 'lucide-react'
+import { useTheme } from '../../context/ThemeContext'
 
 const TABS = [
   { to: '/',           Icon: Navigation,    label: 'Drive'     },
@@ -12,6 +13,8 @@ const TABS = [
 ]
 
 export default function BottomTabBar() {
+  const { accent, pill } = useTheme()
+
   return (
     <nav
       className="fixed z-30 md:hidden flex items-center gap-0.5 px-2 py-2"
@@ -28,12 +31,7 @@ export default function BottomTabBar() {
       }}
     >
       {TABS.map(({ to, Icon, label }) => (
-        <NavLink
-          key={to}
-          to={to}
-          end={to === '/'}
-          title={label}
-        >
+        <NavLink key={to} to={to} end={to === '/'} title={label}>
           {({ isActive }) => (
             <div
               className="flex items-center justify-center transition-all duration-200"
@@ -41,13 +39,13 @@ export default function BottomTabBar() {
                 width: '42px',
                 height: '42px',
                 borderRadius: '999px',
-                background: isActive ? 'rgba(249, 115, 22, 0.12)' : 'transparent',
+                background: isActive ? pill : 'transparent',
               }}
             >
               <Icon
                 size={20}
                 strokeWidth={isActive ? 2.2 : 1.5}
-                style={{ color: isActive ? '#f97316' : '#94a3b8' }}
+                style={{ color: isActive ? accent : '#94a3b8' }}
               />
             </div>
           )}

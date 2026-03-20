@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ThemeProvider } from './context/ThemeContext'
 import AppShell from './components/layout/AppShell'
 import DBInit from './components/DBInit'
 import AuthGate, { isAuthed } from './components/AuthGate'
@@ -19,6 +20,7 @@ function PrivateRoute({ children }) {
 
 export default function App() {
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <DBInit />
       <Routes>
@@ -33,5 +35,6 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </ThemeProvider>
   )
 }

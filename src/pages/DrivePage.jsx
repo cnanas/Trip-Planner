@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
+import { useTheme } from '../context/ThemeContext'
 
 const DEPARTURE = '2026-03-22'
 
@@ -59,6 +60,7 @@ const WARN_STYLE = {
 }
 
 export default function DrivePage() {
+  const { accent } = useTheme()
   const [planKey,      setPlanKey]      = useState('A')
   const [dayNum,       setDayNum]       = useState(getCurrentDay)
   const [customTimes,  setCustomTimes]  = useState({})
@@ -82,10 +84,9 @@ export default function DrivePage() {
             key={key}
             onClick={() => setPlanKey(key)}
             className={`flex-1 flex flex-col items-center py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              planKey === key
-                ? 'bg-white shadow-sm text-[#f97316] border border-[#e2e8f0]'
-                : 'text-[#94a3b8]'
+              planKey === key ? 'bg-white shadow-sm border border-[#e2e8f0]' : 'text-[#94a3b8]'
             }`}
+            style={planKey === key ? { color: accent } : {}}
           >
             <span>{p.label}</span>
             <span className={`text-[10px] font-normal mt-0.5 ${planKey === key ? 'text-[#64748b]' : 'text-[#cbd5e1]'}`}>
@@ -105,7 +106,7 @@ export default function DrivePage() {
           <ChevronLeft size={18} />
         </button>
         <div className="text-center">
-          <div className="text-3xl font-bold text-[#f97316] font-mono leading-none">Day {dayNum}</div>
+          <div key={dayNum} className="day-pop text-3xl font-bold font-mono leading-none" style={{ color: accent }}>Day {dayNum}</div>
           <div className="text-xs text-[#94a3b8] mt-1">of 5</div>
         </div>
         <button
@@ -117,11 +118,13 @@ export default function DrivePage() {
         </button>
       </div>
 
-      {/* Route + stats */}
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 space-y-3">
+      {/* Route + stats — keyed so cards re-stagger on day/plan change */}
+      <div key={`${planKey}-${dayNum}`} className="contents">
+
+      <div className="card-enter bg-white rounded-2xl border border-[#e2e8f0] p-4 space-y-3" style={{ animationDelay: '30ms' }}>
         <div className="flex items-center gap-2">
           <span className="text-xs text-[#64748b] truncate flex-1 text-right">{day.from.name}</span>
-          <ArrowRight size={14} className="text-[#f97316] shrink-0" />
+          <ArrowRight size={14} className="shrink-0" style={{ color: accent }} />
           <span className="text-xs font-semibold text-[#0f172a] truncate flex-1">{day.to.name}</span>
         </div>
 
@@ -135,7 +138,7 @@ export default function DrivePage() {
             <div className="text-[10px] text-[#94a3b8] mt-0.5">driving</div>
           </div>
           <div className="bg-[#f8fafc] rounded-xl p-3 text-center relative">
-            <div className="font-mono font-bold text-sm text-[#f97316]">{fmtTime(departureTime)}</div>
+            <div className="font-mono font-bold text-sm" style={{ color: accent }}>{fmtTime(departureTime)}</div>
             <div className="text-[10px] text-[#94a3b8] mt-0.5 flex items-center justify-center gap-1">
               depart <Pencil size={9} />
             </div>
@@ -159,7 +162,7 @@ export default function DrivePage() {
 
       {/* Warnings */}
       {day.warnings.length > 0 && (
-        <div className="space-y-2">
+        <div className="card-enter space-y-2" style={{ animationDelay: '80ms' }}>
           {day.warnings.map(w => {
             const c = WARN_STYLE[w.severity] ?? WARN_STYLE.info
             return (
@@ -178,7 +181,7 @@ export default function DrivePage() {
 
       {/* Tonight's hotel */}
       {hotel ? (
-        <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4">
+        <div className="card-enter bg-white rounded-2xl border border-[#e2e8f0] p-4" style={{ animationDelay: '130ms' }}>
           <div className="flex items-start justify-between gap-2 mb-3">
             <div className="flex-1 min-w-0">
               <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-0.5">Tonight's Stay</p>
@@ -211,8 +214,10 @@ export default function DrivePage() {
         </div>
       )}
 
+      </div> {/* end keyed stagger wrapper */}
+
       {/* Find Ahead */}
-      <div>
+      <div className="card-enter" style={{ animationDelay: '180ms' }}>
         <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-2 px-1">Find Ahead</p>
         <div className="grid grid-cols-4 gap-2">
           {FIND_AHEAD.map(({ label, icon: Icon, query, color }) => (
