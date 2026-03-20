@@ -421,7 +421,12 @@ export const STOPS_A = [
   { lat: 41.2988, lng: -81.5170 },  // Macedonia OH  (Night 1)
   { lat: 43.0553, lng: -89.4981 },  // Madison WI    (Night 2)
   { lat: 43.8861, lng: -100.7163 }, // Murdo SD      (Night 3)
-  { lat: 45.6658, lng: -108.7690 }, // Laurel MT     (Night 4)
+  { lat: 45.6658, lng: -108.7690,   // Laurel MT     (Night 4)
+    via: [
+      { lat: 44.2911, lng: -105.5022 }, // Gillette, WY  — I-90 dips south here
+      { lat: 44.7944, lng: -106.9560 }, // Sheridan, WY  — before Bighorns
+    ]
+  },
   { lat: 47.6770, lng: -117.2302 }, // Spokane WA
 ]
 
@@ -430,7 +435,13 @@ export const STOPS_B = [
   { lat: 41.5662, lng: -83.6490 },  // Maumee OH (Hampton Inn Toledo-South)
   { lat: 43.8058, lng: -91.2612 },  // La Crosse WI (Gundersen Hotel)
   { lat: 44.0700, lng: -103.1950 }, // Rapid City SD (Hampton Inn Rushmore)
-  { lat: 46.8602, lng: -113.9776 }, // Missoula MT (Comfort Inn Near University)
+  { lat: 46.8602, lng: -113.9776,   // Missoula MT (Comfort Inn Near University)
+    via: [
+      { lat: 44.2911, lng: -105.5022 }, // Gillette, WY
+      { lat: 44.7944, lng: -106.9560 }, // Sheridan, WY
+      { lat: 45.7833, lng: -108.5007 }, // Billings, MT
+    ]
+  },
   { lat: 47.6770, lng: -117.2302 }, // Spokane WA
 ]
 

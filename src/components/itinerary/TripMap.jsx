@@ -13,19 +13,28 @@ L.Icon.Default.mergeOptions({
 
 const GOOGLE_MAPS_URL = 'https://maps.app.goo.gl/XYHsh2sXKodcyeMB8'
 
+// Build the ordered list of points for a leg, including any via waypoints
+function legPoints(from, to) {
+  return [from, ...(to.via ?? []), to]
+}
+
 function getFallback(stops) {
   return stops.slice(0, -1).map((from, i) => {
-    const to = stops[i + 1]
-    return [[from.lat, from.lng], [to.lat, to.lng]]
+    const pts = legPoints(from, stops[i + 1])
+    return pts.map(p => [p.lat, p.lng])
   })
 }
 
 function cacheKey(stops) {
-  return 'osrm_' + stops.map(s => `${s.lat},${s.lng}`).join('|')
+  return 'osrm_' + stops.map(s => {
+    const via = s.via ? s.via.map(v => `${v.lat},${v.lng}`).join('+') : ''
+    return `${s.lat},${s.lng}${via ? '|' + via : ''}`
+  }).join('|')
 }
 
 async function fetchLeg(from, to) {
-  const coords = `${from.lng},${from.lat};${to.lng},${to.lat}`
+  const pts = legPoints(from, to)
+  const coords = pts.map(p => `${p.lng},${p.lat}`).join(';')
   try {
     const res = await fetch(
       `https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`
