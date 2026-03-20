@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { STOPS_A } from '../../data/itinerary'
+import { STOPS_A, REST_STOPS } from '../../data/itinerary'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -83,6 +83,13 @@ const warningIcon = () => divIcon(`
     font-size:13px;font-weight:800;font-family:system-ui,sans-serif;color:#ef4444;
     box-shadow:0 1px 4px rgba(0,0,0,0.1);">!</div>`, 26)
 
+const fuelIcon = (critical = false) => divIcon(`
+  <div style="width:22px;height:22px;
+    background:${critical ? '#fffbeb' : '#f8fafc'};
+    border:1.5px solid ${critical ? '#f59e0b' : '#cbd5e1'};
+    border-radius:6px;display:flex;align-items:center;justify-content:center;
+    font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">⛽</div>`, 22)
+
 // ── Map controller: fly to selected day's bounds ───────────────────────────────
 
 function MapController({ selectedDay, segments, stops }) {
@@ -119,7 +126,7 @@ function MapController({ selectedDay, segments, stops }) {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export default function TripMap({ days, hotels, warningMarkers = [], selectedDayNumber, onHotelClick, height = '100%', routeStops = STOPS_A }) {
+export default function TripMap({ days, hotels, warningMarkers = [], restStops = REST_STOPS, selectedDayNumber, onHotelClick, height = '100%', routeStops = STOPS_A }) {
   const [segments, setSegments] = useState(null)
   const start = days[0].from
   const end = days[days.length - 1].to
@@ -198,6 +205,22 @@ export default function TripMap({ days, hotels, warningMarkers = [], selectedDay
               <div>
                 <div style={{ fontWeight: 'bold', marginBottom: '2px' }}>{w.label}</div>
                 <div style={{ color: '#94a3b8', fontSize: '11px' }}>{w.sublabel}</div>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+
+        {restStops.map((rs) => (
+          <Marker key={rs.id} position={[rs.lat, rs.lng]} icon={fuelIcon(rs.critical)}>
+            <Popup>
+              <div style={{ minWidth: '160px' }}>
+                <div style={{ fontWeight: 'bold', marginBottom: '3px' }}>⛽ {rs.name}</div>
+                <div style={{ color: '#64748b', fontSize: '11px', lineHeight: '1.4' }}>{rs.note}</div>
+                {rs.critical && (
+                  <div style={{ color: '#f59e0b', fontSize: '10px', fontWeight: '600', marginTop: '4px' }}>
+                    Critical fuel stop
+                  </div>
+                )}
               </div>
             </Popup>
           </Marker>

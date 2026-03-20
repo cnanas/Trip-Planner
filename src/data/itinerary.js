@@ -270,6 +270,77 @@ export const WARNING_MARKERS = [
   },
 ]
 
+// ---------------------------------------------------------------------------
+// REST STOPS / FUEL STOPS  (shared by both plans — all on I-90 corridor)
+// ---------------------------------------------------------------------------
+
+export const REST_STOPS = [
+  {
+    id: 'rs-albany',
+    name: 'Albany, NY',
+    lat: 42.6887,
+    lng: -73.8272,
+    note: 'NY Thruway service plaza — fuel, food, restrooms',
+    critical: false,
+  },
+  {
+    id: 'rs-buffalo',
+    name: 'Buffalo / Depew, NY',
+    lat: 42.8894,
+    lng: -78.7370,
+    note: 'Last easy fuel before the PA / OH stretch',
+    critical: false,
+  },
+  {
+    id: 'rs-toledo',
+    name: 'Toledo, OH',
+    lat: 41.6639,
+    lng: -83.5553,
+    note: 'Major fuel & food stop — I-90 / I-80 junction',
+    critical: false,
+  },
+  {
+    id: 'rs-gary',
+    name: 'Gary / Hammond, IN',
+    lat: 41.5931,
+    lng: -87.3470,
+    note: '⚠️ Fill up here before Chicago — avoid stopping in traffic',
+    critical: true,
+  },
+  {
+    id: 'rs-wdells',
+    name: 'Wisconsin Dells, WI',
+    lat: 43.6275,
+    lng: -89.7701,
+    note: 'Good midpoint stop through Wisconsin — I-90/I-94 split',
+    critical: false,
+  },
+  {
+    id: 'rs-siouxfalls',
+    name: 'Sioux Falls, SD',
+    lat: 43.5446,
+    lng: -96.7311,
+    note: '⚠️ Critical fuel stop — gas gets very sparse past here into WY',
+    critical: true,
+  },
+  {
+    id: 'rs-gillette',
+    name: 'Gillette, WY',
+    lat: 44.2911,
+    lng: -105.5022,
+    note: 'Only significant fuel stop in eastern Wyoming — fill the tank',
+    critical: true,
+  },
+  {
+    id: 'rs-sheridan',
+    name: 'Sheridan, WY',
+    lat: 44.7972,
+    lng: -106.9564,
+    note: 'Last fuel before Bighorn Mountain grades (~8,000 ft)',
+    critical: false,
+  },
+]
+
 export const ROUTE_WAYPOINTS = [
   [42.4648, -72.5723],   // 0:  Sunderland, MA (Start)
   [42.1015, -72.5898],   // 1:  Springfield, MA
