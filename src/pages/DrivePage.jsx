@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
-  Phone, ChevronLeft, ChevronRight, Navigation, AlertTriangle,
+  Phone, ChevronLeft, ChevronRight, Navigation, AlertTriangle, Pencil,
 } from 'lucide-react'
 import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
@@ -45,27 +45,11 @@ const FIND_AHEAD = [
 ]
 
 function openMaps(query) {
-  const q = encodeURIComponent(query + ' near me')
-  const ua = navigator.userAgent
-  if (/iPhone|iPad|iPod/i.test(ua)) {
-    window.location.href = `maps://?q=${q}`
-  } else if (/Android/i.test(ua)) {
-    window.location.href = `geo:0,0?q=${q}`
-  } else {
-    window.open(`https://maps.google.com/maps?q=${q}`, '_blank')
-  }
+  window.location.href = `https://maps.google.com/maps?q=${encodeURIComponent(query + ' near me')}`
 }
 
 function openNavigation(address) {
-  const dest = encodeURIComponent(address)
-  const ua = navigator.userAgent
-  if (/iPhone|iPad|iPod/i.test(ua)) {
-    window.location.href = `maps://?daddr=${dest}`
-  } else if (/Android/i.test(ua)) {
-    window.location.href = `https://maps.google.com/maps?daddr=${dest}`
-  } else {
-    window.open(`https://maps.google.com/maps?daddr=${dest}`, '_blank')
-  }
+  window.location.href = `https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`
 }
 
 const WARN_STYLE = {
@@ -75,12 +59,18 @@ const WARN_STYLE = {
 }
 
 export default function DrivePage() {
-  const [planKey, setPlanKey] = useState('A')
-  const [dayNum,  setDayNum]  = useState(getCurrentDay)
+  const [planKey,      setPlanKey]      = useState('A')
+  const [dayNum,       setDayNum]       = useState(getCurrentDay)
+  const [customTimes,  setCustomTimes]  = useState({})
 
   const plan  = PLANS[planKey]
   const day   = plan.days[dayNum - 1]
   const hotel = plan.hotels.find(h => h.day === dayNum) ?? null
+
+  const timeKey      = `${planKey}-${dayNum}`
+  const departureTime = customTimes[timeKey] ?? day.departureTime
+  const setDepartureTime = (val) =>
+    setCustomTimes(prev => ({ ...prev, [timeKey]: val }))
 
   return (
     <div className="max-w-lg mx-auto px-4 py-4 space-y-3">
@@ -144,9 +134,17 @@ export default function DrivePage() {
             <div className="font-mono font-bold text-sm text-[#0f172a]">{day.estimatedHours}h</div>
             <div className="text-[10px] text-[#94a3b8] mt-0.5">driving</div>
           </div>
-          <div className="bg-[#f8fafc] rounded-xl p-3 text-center">
-            <div className="font-mono font-bold text-sm text-[#f97316]">{fmtTime(day.departureTime)}</div>
-            <div className="text-[10px] text-[#94a3b8] mt-0.5">depart</div>
+          <div className="bg-[#f8fafc] rounded-xl p-3 text-center relative">
+            <div className="font-mono font-bold text-sm text-[#f97316]">{fmtTime(departureTime)}</div>
+            <div className="text-[10px] text-[#94a3b8] mt-0.5 flex items-center justify-center gap-1">
+              depart <Pencil size={9} />
+            </div>
+            <input
+              type="time"
+              value={departureTime}
+              onChange={e => setDepartureTime(e.target.value)}
+              className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+            />
           </div>
         </div>
 
@@ -154,7 +152,7 @@ export default function DrivePage() {
           <Navigation size={13} className="text-[#22c55e] shrink-0" />
           <span className="text-xs text-[#64748b]">Estimated arrival</span>
           <span className="text-xs font-mono font-bold text-[#0f172a] ml-auto">
-            {calcArrival(day.departureTime, day.estimatedHours)}
+            {calcArrival(departureTime, day.estimatedHours)}
           </span>
         </div>
       </div>

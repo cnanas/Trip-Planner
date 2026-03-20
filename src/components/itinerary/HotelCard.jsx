@@ -1,15 +1,7 @@
 import { Phone, MapPin } from 'lucide-react'
 
 function openNavigation(address) {
-  const dest = encodeURIComponent(address)
-  const ua = navigator.userAgent
-  if (/iPhone|iPad|iPod/i.test(ua)) {
-    window.location.href = `maps://?daddr=${dest}`
-  } else if (/Android/i.test(ua)) {
-    window.location.href = `https://maps.google.com/maps?daddr=${dest}`
-  } else {
-    window.open(`https://maps.google.com/maps?daddr=${dest}`, '_blank')
-  }
+  window.location.href = `https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`
 }
 import WeatherBadge from '../WeatherBadge'
 
