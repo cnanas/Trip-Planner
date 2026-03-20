@@ -213,14 +213,25 @@ export default function TripMap({ days, hotels, warningMarkers = [], restStops =
         {restStops.map((rs) => (
           <Marker key={rs.id} position={[rs.lat, rs.lng]} icon={fuelIcon(rs.critical)}>
             <Popup>
-              <div style={{ minWidth: '160px' }}>
+              <div style={{ minWidth: '170px' }}>
                 <div style={{ fontWeight: 'bold', marginBottom: '3px' }}>⛽ {rs.name}</div>
-                <div style={{ color: '#64748b', fontSize: '11px', lineHeight: '1.4' }}>{rs.note}</div>
-                {rs.critical && (
-                  <div style={{ color: '#f59e0b', fontSize: '10px', fontWeight: '600', marginTop: '4px' }}>
-                    Critical fuel stop
-                  </div>
-                )}
+                <div style={{ color: '#64748b', fontSize: '11px', lineHeight: '1.4', marginBottom: '6px' }}>{rs.note}</div>
+                <a
+                  href={`https://maps.google.com/maps?q=${rs.lat},${rs.lng}`}
+                  onClick={() => { window.location.href = `https://maps.google.com/maps?q=${rs.lat},${rs.lng}` }}
+                  style={{
+                    display: 'inline-block',
+                    fontSize: '11px',
+                    fontWeight: '600',
+                    color: '#2563eb',
+                    textDecoration: 'none',
+                    padding: '3px 8px',
+                    background: '#eff6ff',
+                    borderRadius: '6px',
+                  }}
+                >
+                  Open in Google Maps →
+                </a>
               </div>
             </Popup>
           </Marker>
