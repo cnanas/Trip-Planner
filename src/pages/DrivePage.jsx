@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
   Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Pencil,
@@ -166,10 +166,11 @@ export default function DrivePage() {
   const day   = plan.days[dayNum - 1]
   const hotel = plan.hotels.find(h => h.day === dayNum) ?? null
 
-  const timeKey      = `${planKey}-${dayNum}`
+  const timeKey       = `${planKey}-${dayNum}`
   const departureTime = customTimes[timeKey] ?? day.departureTime
   const setDepartureTime = (val) =>
     setCustomTimes(prev => ({ ...prev, [timeKey]: val }))
+  const timeInputRef  = useRef()
 
   return (
     <div className="max-w-lg mx-auto px-4 py-4 space-y-3">
@@ -234,16 +235,20 @@ export default function DrivePage() {
             <div className="font-mono font-bold text-sm text-[#0f172a]">{day.estimatedHours}h</div>
             <div className="text-[10px] text-[#94a3b8] mt-0.5">driving</div>
           </div>
-          <div className="bg-[#f8fafc] rounded-xl p-3 text-center relative">
+          <div
+            className="bg-[#f8fafc] rounded-xl p-3 text-center relative cursor-pointer"
+            onClick={() => timeInputRef.current?.showPicker?.()}
+          >
             <div className="font-mono font-bold text-sm" style={{ color: accent }}>{fmtTime(departureTime)}</div>
             <div className="text-[10px] text-[#94a3b8] mt-0.5 flex items-center justify-center gap-1">
               depart <Pencil size={9} />
             </div>
             <input
+              ref={timeInputRef}
               type="time"
               value={departureTime}
               onChange={e => setDepartureTime(e.target.value)}
-              className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+              className="sr-only"
             />
           </div>
         </div>
