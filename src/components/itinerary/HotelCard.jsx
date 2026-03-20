@@ -1,4 +1,16 @@
 import { Phone, MapPin } from 'lucide-react'
+
+function openNavigation(address) {
+  const dest = encodeURIComponent(address)
+  const ua = navigator.userAgent
+  if (/iPhone|iPad|iPod/i.test(ua)) {
+    window.location.href = `maps://?daddr=${dest}`
+  } else if (/Android/i.test(ua)) {
+    window.location.href = `https://maps.google.com/maps?daddr=${dest}`
+  } else {
+    window.open(`https://maps.google.com/maps?daddr=${dest}`, '_blank')
+  }
+}
 import WeatherBadge from '../WeatherBadge'
 
 const TAG_LABELS = {
@@ -86,10 +98,13 @@ export default function HotelCard({ hotel }) {
         </a>
       </div>
 
-      <div className="flex items-center gap-1.5 mt-1">
-        <MapPin size={11} className="text-[#94a3b8] shrink-0" />
-        <p className="text-xs text-[#94a3b8]">{hotel.address}</p>
-      </div>
+      <button
+        onClick={() => openNavigation(hotel.address)}
+        className="flex items-center gap-1.5 mt-1 text-left hover:text-[#2563eb] transition-colors group"
+      >
+        <MapPin size={11} className="text-[#94a3b8] shrink-0 group-hover:text-[#2563eb]" />
+        <p className="text-xs text-[#94a3b8] group-hover:text-[#2563eb] underline underline-offset-2">{hotel.address}</p>
+      </button>
     </div>
   )
 }
