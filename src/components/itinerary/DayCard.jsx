@@ -1,7 +1,13 @@
 import { useRef } from 'react'
 import { useTripStore } from '../../store/tripStore'
-import { AlertTriangle, MapPin, CheckSquare, Square } from 'lucide-react'
+import { AlertTriangle, MapPin, CheckSquare, Square, Navigation } from 'lucide-react'
 import HotelCard from './HotelCard'
+
+function buildDirectionsUrl(day, hotel) {
+  const origin = `${day.from.lat},${day.from.lng}`
+  const dest = hotel ? encodeURIComponent(hotel.address) : `${day.to.lat},${day.to.lng}`
+  return `https://www.google.com/maps/dir/${origin}/${dest}`
+}
 
 const SEVERITY_STYLES = {
   info:    'bg-[#eff6ff] border-[#bfdbfe] text-[#1d4ed8]',
@@ -66,13 +72,32 @@ export default function DayCard({ day, hotel, warnings = [], stops = [], isSelec
           </div>
 
           <div className="min-w-0">
-            <div className="text-xs text-[#64748b] truncate">
-              {day.from.name.split(',')[0]} → {day.to.name.split(',')[0]}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-[#64748b] truncate">
+                {day.from.name.split(',')[0]} → {day.to.name.split(',')[0]}
+              </span>
+              <a
+                href={buildDirectionsUrl(day, hotel)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+                className="shrink-0 text-[#94a3b8] hover:text-[#f97316] transition-colors"
+                title="Open in Google Maps"
+              >
+                <Navigation size={11} />
+              </a>
             </div>
             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
               <span className="font-mono text-sm font-bold text-[#0f172a]">{day.miles} mi</span>
               <span className="text-[#e2e8f0]">·</span>
               <span className="text-xs text-[#64748b]">~{day.estimatedHours} hrs</span>
+              {day.elevationGainFt && (
+                <>
+                  <span className="text-[#e2e8f0]">·</span>
+                  <span className="text-xs text-[#22c55e] font-medium">↑{day.elevationGainFt.toLocaleString()}</span>
+                  <span className="text-xs text-[#94a3b8]">↓{day.elevationLossFt.toLocaleString()} ft</span>
+                </>
+              )}
               {warnings.length > 0 && (
                 <>
                   <span className="text-[#e2e8f0]">·</span>

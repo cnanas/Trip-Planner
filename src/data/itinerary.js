@@ -33,6 +33,8 @@ export const DAYS = [
     miles: 550,
     estimatedHours: 9.5,
     departureTime: "06:00",
+    elevationGainFt: 3600,
+    elevationLossFt: 2900,
     hotelId: "hotel-1",
     warnings: [
       {
@@ -62,6 +64,8 @@ export const DAYS = [
     miles: 530,
     estimatedHours: 9.0,
     departureTime: "06:00",
+    elevationGainFt: 1200,
+    elevationLossFt: 1000,
     hotelId: "hotel-2",
     warnings: [
       {
@@ -91,6 +95,8 @@ export const DAYS = [
     miles: 450,
     estimatedHours: 7.5,
     departureTime: "07:00",
+    elevationGainFt: 2500,
+    elevationLossFt: 900,
     hotelId: "hotel-3",
     warnings: [
       {
@@ -112,6 +118,8 @@ export const DAYS = [
     miles: 550,
     estimatedHours: 9.0,
     departureTime: "06:00",
+    elevationGainFt: 6200,
+    elevationLossFt: 5800,
     hotelId: "hotel-4",
     warnings: [
       {
@@ -141,6 +149,8 @@ export const DAYS = [
     miles: 400,
     estimatedHours: 6.5,
     departureTime: "07:00",
+    elevationGainFt: 2800,
+    elevationLossFt: 3900,
     hotelId: null,
     warnings: [],
     note: "",
@@ -457,6 +467,8 @@ export const DAYS_B = [
     miles: 605,
     estimatedHours: 10.5,
     departureTime: "05:30",
+    elevationGainFt: 3200,
+    elevationLossFt: 3400,
     hotelId: "hotel-b1",
     warnings: [
       { id: "b-warn-1-1", day: 1, type: "toll", severity: "info",    message: "New York Thruway tolls (~$20–30 depending on exits)", icon: "🛣️" },
@@ -473,6 +485,8 @@ export const DAYS_B = [
     miles: 555,
     estimatedHours: 9.5,
     departureTime: "06:00",
+    elevationGainFt: 1100,
+    elevationLossFt: 1200,
     hotelId: "hotel-b2",
     warnings: [
       { id: "b-warn-2-1", day: 2, type: "traffic", severity: "warning", message: "Chicago metro — aim to pass through before 7 AM or after 9 AM. Rush hour with a UHaul + trailer can cost 2+ hours.", icon: "⚠️" },
@@ -488,6 +502,8 @@ export const DAYS_B = [
     miles: 600,
     estimatedHours: 10.0,
     departureTime: "06:00",
+    elevationGainFt: 3400,
+    elevationLossFt: 1100,
     hotelId: "hotel-b3",
     warnings: [
       { id: "b-warn-3-1", day: 3, type: "fuel", severity: "caution", message: "Gas stations become sparse past Sioux Falls. Fill up before leaving the city.", icon: "⛽" },
@@ -502,6 +518,8 @@ export const DAYS_B = [
     miles: 530,
     estimatedHours: 9.0,
     departureTime: "06:00",
+    elevationGainFt: 5900,
+    elevationLossFt: 6400,
     hotelId: "hotel-b4",
     warnings: [
       { id: "b-warn-4-1", day: 4, type: "fuel",      severity: "caution", message: "Long fuel gaps past Rapid City into Wyoming. Keep tank above half at all times.", icon: "⛽" },
@@ -517,6 +535,8 @@ export const DAYS_B = [
     miles: 195,
     estimatedHours: 3.5,
     departureTime: "08:30",
+    elevationGainFt: 1300,
+    elevationLossFt: 2600,
     hotelId: null,
     warnings: [],
     note: "Easy final morning — arrive by noon and start settling in!",
