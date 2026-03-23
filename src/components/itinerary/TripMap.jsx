@@ -169,10 +169,12 @@ export default function TripMap({ days, hotels, warningMarkers = [], restStops =
 
         {displaySegments.map((pts, i) => {
           const dayNum = i + 1
+          const cleanPts = pts?.filter(([lat, lng]) => !isNaN(lat) && !isNaN(lng)) ?? []
+          if (cleanPts.length < 2) return null
           return (
             <Polyline
               key={dayNum}
-              positions={pts}
+              positions={cleanPts}
               color={getColor(dayNum)}
               weight={selectedDayNumber === dayNum ? 4 : 2.5}
               opacity={selectedDayNumber && selectedDayNumber !== dayNum ? 0.35 : 0.9}

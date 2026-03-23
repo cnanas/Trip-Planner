@@ -1,4 +1,5 @@
-import { Phone, MapPin } from 'lucide-react'
+import { useState } from 'react'
+import { Phone, MapPin, Tag, ChevronDown } from 'lucide-react'
 
 function openNavigation(address) {
   window.location.href = `https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`
@@ -39,7 +40,10 @@ function StarRating({ rating }) {
 }
 
 export default function HotelCard({ hotel }) {
+  const [altOpen, setAltOpen] = useState(false)
   if (!hotel) return null
+
+  const hasAlts = hotel.alternatives?.length > 0
 
   return (
     <div className="bg-[#f8fafc] rounded-2xl p-4 border border-[#e2e8f0]">
@@ -97,6 +101,50 @@ export default function HotelCard({ hotel }) {
         <MapPin size={11} className="text-[#94a3b8] shrink-0 group-hover:text-[#2563eb]" />
         <p className="text-xs text-[#94a3b8] group-hover:text-[#2563eb] underline underline-offset-2">{hotel.address}</p>
       </button>
+
+      {hasAlts && (
+        <div className="mt-3 pt-3 border-t border-[#e2e8f0]">
+          <button
+            onClick={() => setAltOpen(v => !v)}
+            className="flex items-center gap-1.5 w-full text-left"
+          >
+            <Tag size={11} className="text-[#f97316] shrink-0" />
+            <span className="text-xs font-semibold flex-1 text-[#f97316]">Budget Alternatives</span>
+            <ChevronDown
+              size={13}
+              className="text-[#94a3b8] transition-transform duration-200 shrink-0"
+              style={{ transform: altOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+            />
+          </button>
+          {altOpen && (
+            <div className="mt-2 space-y-2">
+              {hotel.alternatives.map(alt => (
+                <div key={alt.id} className="rounded-xl border border-[#e2e8f0] bg-white p-3">
+                  <div className="flex items-start justify-between gap-1 mb-1">
+                    <span className="text-xs font-semibold text-[#0f172a] leading-snug flex-1">{alt.name}</span>
+                    <span className="text-[10px] font-bold text-[#22c55e] shrink-0 ml-1">{alt.priceRange}</span>
+                  </div>
+                  <p className="text-[11px] text-[#ec4899] leading-relaxed mb-2">{alt.petNotes}</p>
+                  <a
+                    href={`tel:${alt.phone}`}
+                    className="flex items-center gap-1 text-[11px] text-[#2563eb] min-h-[36px]"
+                  >
+                    <Phone size={11} />
+                    {alt.phone.replace(/^\+1/, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}
+                  </a>
+                  <button
+                    onClick={() => openNavigation(alt.address)}
+                    className="flex items-center gap-1 mt-0.5 text-left group"
+                  >
+                    <MapPin size={10} className="text-[#94a3b8] shrink-0 group-hover:text-[#2563eb]" />
+                    <span className="text-[11px] text-[#94a3b8] group-hover:text-[#2563eb] underline underline-offset-2">{alt.address}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
