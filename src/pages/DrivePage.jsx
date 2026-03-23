@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
-  Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle,
+  Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Tag,
 } from 'lucide-react'
 import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
@@ -83,6 +83,88 @@ const EMERGENCY_NUMBERS = [
     extra: null,
   },
 ]
+
+function HotelSection({ hotel, accent }) {
+  const [altOpen, setAltOpen] = useState(false)
+  const hasAlts = hotel.alternatives?.length > 0
+
+  return (
+    <div className="card-enter bg-white rounded-2xl border border-[#e2e8f0] p-4" style={{ animationDelay: '130ms' }}>
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-0.5">Tonight's Stay</p>
+          <h3 className="text-sm font-semibold text-[#0f172a] leading-snug">{hotel.name}</h3>
+          <p className="text-xs text-[#94a3b8] mt-0.5">Check-in {hotel.checkInTime}</p>
+        </div>
+        <WeatherBadge lat={hotel.lat} lng={hotel.lng} day={hotel.day} />
+      </div>
+      <div className="flex items-center gap-3 pt-3 border-t border-[#e2e8f0]">
+        <a
+          href={`tel:${hotel.phone}`}
+          className="flex items-center gap-1.5 text-xs text-[#2563eb] hover:text-[#1d4ed8] transition-colors min-h-[44px]"
+        >
+          <Phone size={13} />
+          {hotel.phone}
+        </a>
+      </div>
+      <button
+        onClick={() => openNavigation(hotel.address)}
+        className="flex items-center gap-1.5 mt-1 text-left hover:text-[#2563eb] transition-colors group"
+      >
+        <MapPin size={11} className="text-[#94a3b8] shrink-0 group-hover:text-[#2563eb]" />
+        <p className="text-xs text-[#94a3b8] group-hover:text-[#2563eb] underline underline-offset-2">{hotel.address}</p>
+      </button>
+
+      {hasAlts && (
+        <div className="mt-3 pt-3 border-t border-[#e2e8f0]">
+          <button
+            onClick={() => setAltOpen(v => !v)}
+            className="flex items-center gap-1.5 w-full text-left"
+          >
+            <Tag size={11} style={{ color: accent }} className="shrink-0" />
+            <span className="text-xs font-semibold flex-1" style={{ color: accent }}>
+              Budget Alternatives
+            </span>
+            <ChevronDown
+              size={13}
+              className="text-[#94a3b8] transition-transform duration-200 shrink-0"
+              style={{ transform: altOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+            />
+          </button>
+          {altOpen && (
+            <div className="mt-2 space-y-2">
+              {hotel.alternatives.map(alt => (
+                <div key={alt.id} className="rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-3">
+                  <div className="flex items-start justify-between gap-1 mb-1">
+                    <span className="text-xs font-semibold text-[#0f172a] leading-snug flex-1">{alt.name}</span>
+                    <span className="text-[10px] font-bold text-[#22c55e] shrink-0 ml-1">{alt.priceRange}</span>
+                  </div>
+                  <p className="text-[11px] text-[#ec4899] leading-relaxed mb-2">{alt.petNotes}</p>
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={`tel:${alt.phone}`}
+                      className="flex items-center gap-1 text-[11px] text-[#2563eb] min-h-[36px]"
+                    >
+                      <Phone size={11} />
+                      {alt.phone.replace(/^\+1/, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}
+                    </a>
+                  </div>
+                  <button
+                    onClick={() => openNavigation(alt.address)}
+                    className="flex items-center gap-1 mt-0.5 text-left group"
+                  >
+                    <MapPin size={10} className="text-[#94a3b8] shrink-0 group-hover:text-[#2563eb]" />
+                    <span className="text-[11px] text-[#94a3b8] group-hover:text-[#2563eb] underline underline-offset-2">{alt.address}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function EmergencyNumbers() {
   const [expanded, setExpanded] = useState(false)
@@ -276,32 +358,7 @@ export default function DrivePage() {
 
       {/* Tonight's hotel */}
       {hotel ? (
-        <div className="card-enter bg-white rounded-2xl border border-[#e2e8f0] p-4" style={{ animationDelay: '130ms' }}>
-          <div className="flex items-start justify-between gap-2 mb-3">
-            <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-0.5">Tonight's Stay</p>
-              <h3 className="text-sm font-semibold text-[#0f172a] leading-snug">{hotel.name}</h3>
-              <p className="text-xs text-[#94a3b8] mt-0.5">Check-in {hotel.checkInTime}</p>
-            </div>
-            <WeatherBadge lat={hotel.lat} lng={hotel.lng} day={hotel.day} />
-          </div>
-          <div className="flex items-center gap-3 pt-3 border-t border-[#e2e8f0]">
-            <a
-              href={`tel:${hotel.phone}`}
-              className="flex items-center gap-1.5 text-xs text-[#2563eb] hover:text-[#1d4ed8] transition-colors min-h-[44px]"
-            >
-              <Phone size={13} />
-              {hotel.phone}
-            </a>
-          </div>
-          <button
-            onClick={() => openNavigation(hotel.address)}
-            className="flex items-center gap-1.5 mt-1 text-left hover:text-[#2563eb] transition-colors group"
-          >
-            <MapPin size={11} className="text-[#94a3b8] shrink-0 group-hover:text-[#2563eb]" />
-            <p className="text-xs text-[#94a3b8] group-hover:text-[#2563eb] underline underline-offset-2">{hotel.address}</p>
-          </button>
-        </div>
+        <HotelSection hotel={hotel} accent={accent} />
       ) : (
         <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-2xl p-5 text-center">
           <p className="text-sm font-semibold text-[#15803d]">You've arrived!</p>
