@@ -46,11 +46,11 @@ const FIND_AHEAD = [
 ]
 
 function openMaps(query) {
-  window.location.href = `https://maps.google.com/maps?q=${encodeURIComponent(query + ' near me')}`
+  window.open(`https://maps.google.com/maps?q=${encodeURIComponent(query + ' near me')}`, '_blank', 'noopener,noreferrer')
 }
 
 function openNavigation(address) {
-  window.location.href = `https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`
+  window.open(`https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`, '_blank', 'noopener,noreferrer')
 }
 
 const WARN_STYLE = {

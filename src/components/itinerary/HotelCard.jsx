@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Phone, MapPin, Tag, ChevronDown } from 'lucide-react'
 
 function openNavigation(address) {
-  window.location.href = `https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`
+  window.open(`https://maps.google.com/maps?daddr=${encodeURIComponent(address)}`, '_blank', 'noopener,noreferrer')
 }
 import WeatherBadge from '../WeatherBadge'
 

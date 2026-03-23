@@ -229,7 +229,8 @@ export default function TripMap({ days, hotels, warningMarkers = [], restStops =
                 <div style={{ color: '#64748b', fontSize: '11px', lineHeight: '1.4', marginBottom: '6px' }}>{rs.note}</div>
                 <a
                   href={`https://maps.google.com/maps?q=${rs.lat},${rs.lng}`}
-                  onClick={() => { window.location.href = `https://maps.google.com/maps?q=${rs.lat},${rs.lng}` }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     display: 'inline-block',
                     fontSize: '11px',
