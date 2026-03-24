@@ -13,7 +13,7 @@ const TripMap = lazy(() => import('../components/itinerary/TripMap'))
 
 const PLANS = {
   A: { label: 'Plan A', sublabel: 'Original',  days: DAYS,   hotels: HOTELS,   routeStops: STOPS_A, summary: { miles: 2480, day5: '~400 mi · 6.5h' } },
-  C: { label: 'Plan C', sublabel: 'Hybrid',    days: DAYS_C, hotels: HOTELS_C, routeStops: STOPS_C, summary: { miles: 2570, day5: '~400 mi · 6.5h' } },
+  C: { label: 'Plan C', sublabel: 'Hybrid',    days: DAYS_C, hotels: HOTELS_C, routeStops: STOPS_C, summary: { miles: 2530, day5: '~350 mi · 5.5h' } },
   B: { label: 'Plan B', sublabel: '+1hr/day',  days: DAYS_B, hotels: HOTELS_B, routeStops: STOPS_B, summary: { miles: 2485, day5: '~195 mi · 3.5h' } },
 }
 

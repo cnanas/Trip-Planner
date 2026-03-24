@@ -444,8 +444,8 @@ export const STOPS_C = [
   { lat: 42.4522, lng: -72.5620 },  // Sunderland MA
   { lat: 41.5662, lng: -83.6490 },  // Maumee OH    (Night 1 — same as Plan B)
   { lat: 43.8058, lng: -91.2612 },  // La Crosse WI (Night 2 — same as Plan B)
-  { lat: 43.8861, lng: -100.7163 }, // Murdo SD     (Night 3 — same as Plan A)
-  { lat: 45.6658, lng: -108.7690,   // Laurel MT    (Night 4 — same as Plan A)
+  { lat: 44.0816, lng: -103.2069 }, // Rapid City SD (Night 3 — BW Ramkota, unique hotel)
+  { lat: 45.6836, lng: -111.0384,   // Bozeman MT   (Night 4 — unique city)
     via: [
       { lat: 44.2911, lng: -105.5022 }, // Gillette, WY
       { lat: 44.7944, lng: -106.9560 }, // Sheridan, WY
@@ -771,13 +771,13 @@ export const DAYS_C = [
   },
   {
     number: 3,
-    from: { name: "La Crosse, WI", lat: 43.8014, lng: -91.2397,  state: "WI" },
-    to:   { name: "Murdo, SD",     lat: 43.8861, lng: -100.7163, state: "SD" },
-    miles: 465,
-    estimatedHours: 8.0,
-    departureTime: "06:30",
-    elevationGainFt: 2200,
-    elevationLossFt: 700,
+    from: { name: "La Crosse, WI",  lat: 43.8014, lng: -91.2397,  state: "WI" },
+    to:   { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
+    miles: 600,
+    estimatedHours: 10.0,
+    departureTime: "06:00",
+    elevationGainFt: 3400,
+    elevationLossFt: 1100,
     hotelId: "hotel-c3",
     warnings: [
       { id: "c-warn-3-1", day: 3, type: "fuel", severity: "caution", message: "Gas stations become sparse past Sioux Falls. Fill up before leaving the city.", icon: "⛽" },
@@ -787,42 +787,76 @@ export const DAYS_C = [
   },
   {
     number: 4,
-    from: { name: "Murdo, SD",   lat: 43.8861, lng: -100.7163, state: "SD" },
-    to:   { name: "Laurel, MT",  lat: 45.6658, lng: -108.7690, state: "MT" },
-    miles: 550,
-    estimatedHours: 9.0,
-    departureTime: "06:00",
-    elevationGainFt: 6200,
-    elevationLossFt: 5800,
+    from: { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
+    to:   { name: "Bozeman, MT",    lat: 45.6836, lng: -111.0384, state: "MT" },
+    miles: 420,
+    estimatedHours: 7.5,
+    departureTime: "07:00",
+    elevationGainFt: 5500,
+    elevationLossFt: 5200,
     hotelId: "hotel-c4",
     warnings: [
       { id: "c-warn-4-1", day: 4, type: "fuel",      severity: "caution", message: "Long fuel gaps past Rapid City into Wyoming. Keep tank above half at all times.", icon: "⛽" },
       { id: "c-warn-4-2", day: 4, type: "elevation", severity: "caution", message: "Bighorn Mountains near Sheridan, WY reach ~8,000 ft. Take grades slow with trailer.", icon: "⛰️" },
     ],
-    note: "",
+    note: "Shorter miles but the Bighorn crossing makes this the most demanding stretch. Pull off for views!",
     completed: false,
   },
   {
     number: 5,
-    from: { name: "Laurel, MT",  lat: 45.6658, lng: -108.7690, state: "MT" },
-    to:   { name: "Spokane, WA", lat: 47.6588, lng: -117.426,  state: "WA" },
-    miles: 400,
-    estimatedHours: 6.5,
-    departureTime: "07:00",
-    elevationGainFt: 2800,
-    elevationLossFt: 3900,
+    from: { name: "Bozeman, MT",  lat: 45.6836, lng: -111.0384, state: "MT" },
+    to:   { name: "Spokane, WA",  lat: 47.6588, lng: -117.426,  state: "WA" },
+    miles: 350,
+    estimatedHours: 5.5,
+    departureTime: "08:00",
+    elevationGainFt: 2200,
+    elevationLossFt: 4000,
     hotelId: null,
     warnings: [],
-    note: "",
+    note: "Easy final stretch — arrive mid-afternoon and start settling in!",
     completed: false,
   },
 ]
 
 export const HOTELS_C = [
-  { ...HOTELS_B[0], id: 'hotel-c1' },  // Hampton Inn Maumee           (Night 1 — same as Plan B)
-  { ...HOTELS_B[1], id: 'hotel-c2' },  // Gundersen Hotel La Crosse    (Night 2 — same as Plan B)
-  { ...HOTELS[2],   id: 'hotel-c3' },  // BW Graham's Murdo            (Night 3 — Plan A, dog treats!)
-  { ...HOTELS[3],   id: 'hotel-c4' },  // BW Yellowstone Crossing Laurel (Night 4 — Plan A)
+  { ...HOTELS_B[0], id: 'hotel-c1' },  // Hampton Inn Maumee        (Night 1 — same as Plan B)
+  { ...HOTELS_B[1], id: 'hotel-c2' },  // Gundersen La Crosse       (Night 2 — same as Plan B)
+  {
+    id: "hotel-c3",
+    day: 3,
+    name: "Best Western Ramkota Hotel",
+    address: "2111 N LaCrosse St, Rapid City, SD 57701",
+    lat: 44.0816,
+    lng: -103.2069,
+    rating: 3.7,
+    ratingCount: 820,
+    petFriendly: true,
+    petNotes: "$25/pet per night. Restaurant & lounge on-site. Close to Mount Rushmore and Badlands.",
+    phone: "+16053438550",
+    chains: ["Best Western"],
+    tags: ["dog-friendly", "highway-access", "restaurant"],
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
+    websiteUrl: null,
+  },
+  {
+    id: "hotel-c4",
+    day: 4,
+    name: "Best Western Plus GranTree Inn",
+    address: "1325 N 7th Ave, Bozeman, MT 59715",
+    lat: 45.6836,
+    lng: -111.0384,
+    rating: 3.9,
+    ratingCount: 1240,
+    petFriendly: true,
+    petNotes: "$25/night per pet (max $75/stay). Outdoor pet walking area. Near Yellowstone gateway.",
+    phone: "+14065875261",
+    chains: ["Best Western"],
+    tags: ["breakfast", "dog-friendly", "highway-access", "pool"],
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
+    websiteUrl: null,
+  },
 ]
 
 // ---------------------------------------------------------------------------
