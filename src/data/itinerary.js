@@ -517,7 +517,7 @@ export const DAYS_B = [
     from: { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
     to:   { name: "Missoula, MT",   lat: 46.8721, lng: -113.9940, state: "MT" },
     miles: 530,
-    estimatedHours: 9.0,
+    estimatedHours: 7.5,
     departureTime: "06:00",
     elevationGainFt: 5900,
     elevationLossFt: 6400,
