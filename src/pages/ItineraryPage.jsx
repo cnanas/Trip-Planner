@@ -1,10 +1,10 @@
 import { useState, lazy, Suspense } from 'react'
 import { ChevronUp, ChevronDown } from 'lucide-react'
 import {
-  DAYS, DAYS_B, DAYS_C,
-  HOTELS, HOTELS_B, HOTELS_C,
+  DAYS, DAYS_B,
+  HOTELS, HOTELS_B,
   STOPS, STOPS as STOPS_NOTABLE,
-  STOPS_A, STOPS_B, STOPS_C,
+  STOPS_A, STOPS_B,
   TRIP_SUMMARY, WARNING_MARKERS,
 } from '../data/itinerary'
 import RouteTimeline from '../components/itinerary/RouteTimeline'
@@ -12,9 +12,8 @@ import RouteTimeline from '../components/itinerary/RouteTimeline'
 const TripMap = lazy(() => import('../components/itinerary/TripMap'))
 
 const PLANS = {
-  A: { label: 'Plan A', sublabel: 'Original',  days: DAYS,   hotels: HOTELS,   routeStops: STOPS_A, summary: { miles: 2480, day5: '~400 mi · 6.5h' } },
-  C: { label: 'Plan C', sublabel: 'Hybrid',    days: DAYS_C, hotels: HOTELS_C, routeStops: STOPS_C, summary: { miles: 2530, day5: '~350 mi · 5.5h' } },
-  B: { label: 'Plan B', sublabel: '+1hr/day',  days: DAYS_B, hotels: HOTELS_B, routeStops: STOPS_B, summary: { miles: 2485, day5: '~195 mi · 3.5h' } },
+  A: { label: 'Plan A', sublabel: 'Original', days: DAYS,   hotels: HOTELS,   routeStops: STOPS_A, summary: { miles: 2480, day5: '~390 mi · 6.5h' } },
+  B: { label: 'Plan B', sublabel: '+1hr/day', days: DAYS_B, hotels: HOTELS_B, routeStops: STOPS_B, summary: { miles: 2485, day5: '~195 mi · 3.5h' } },
 }
 
 export default function ItineraryPage() {

@@ -3,7 +3,7 @@ import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
   Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Tag,
 } from 'lucide-react'
-import { DAYS, DAYS_B, DAYS_C, HOTELS, HOTELS_B, HOTELS_C } from '../data/itinerary'
+import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
 import { useTheme } from '../context/ThemeContext'
 
@@ -11,7 +11,6 @@ const DEPARTURE = '2026-03-22'
 
 const PLANS = {
   A: { label: 'Plan A', sublabel: 'Original',  days: DAYS,   hotels: HOTELS   },
-  C: { label: 'Plan C', sublabel: 'Hybrid',    days: DAYS_C, hotels: HOTELS_C },
   B: { label: 'Plan B', sublabel: '+1hr/day',  days: DAYS_B, hotels: HOTELS_B },
 }
 
