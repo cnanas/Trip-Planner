@@ -440,6 +440,20 @@ export const STOPS_A = [
   { lat: 47.6770, lng: -117.2302 }, // Spokane WA
 ]
 
+export const STOPS_C = [
+  { lat: 42.4522, lng: -72.5620 },  // Sunderland MA
+  { lat: 41.5662, lng: -83.6490 },  // Maumee OH    (Night 1 — same as Plan B)
+  { lat: 43.8058, lng: -91.2612 },  // La Crosse WI (Night 2 — same as Plan B)
+  { lat: 44.0700, lng: -103.1950 }, // Rapid City SD (Night 3 — same as Plan B)
+  { lat: 45.6658, lng: -108.7690,   // Laurel MT    (Night 4 — same as Plan A)
+    via: [
+      { lat: 44.2911, lng: -105.5022 }, // Gillette, WY
+      { lat: 44.7944, lng: -106.9560 }, // Sheridan, WY
+    ]
+  },
+  { lat: 47.6770, lng: -117.2302 }, // Spokane WA
+]
+
 export const STOPS_B = [
   { lat: 42.4522, lng: -72.5620 },  // Sunderland MA
   { lat: 41.5662, lng: -83.6490 },  // Maumee OH (Hampton Inn Toledo-South)
@@ -713,6 +727,102 @@ export const HOTELS_B = [
       },
     ],
   },
+]
+
+// ---------------------------------------------------------------------------
+// PLAN C — "Hybrid" (Plan B Days 1–2, then shorter Day 4 to Laurel + Plan A Day 5)
+// ---------------------------------------------------------------------------
+
+export const DAYS_C = [
+  {
+    number: 1,
+    from: { name: "Sunderland, MA", lat: 42.4648, lng: -72.5723, state: "MA" },
+    to:   { name: "Maumee, OH",     lat: 41.5662, lng: -83.6490, state: "OH" },
+    miles: 605,
+    estimatedHours: 10.5,
+    departureTime: "05:30",
+    elevationGainFt: 3200,
+    elevationLossFt: 3400,
+    hotelId: "hotel-c1",
+    warnings: [
+      { id: "c-warn-1-1", day: 1, type: "toll",      severity: "info",    message: "New York Thruway tolls (~$20–30 depending on exits)", icon: "🛣️" },
+      { id: "c-warn-1-2", day: 1, type: "toll",      severity: "info",    message: "Ohio Turnpike tolls (~$10–15)", icon: "🛣️" },
+      { id: "c-warn-1-3", day: 1, type: "info",      severity: "caution", message: "Longest day of the trip — early start recommended.", icon: "⏰" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 2,
+    from: { name: "Toledo, OH",    lat: 41.6639, lng: -83.5553, state: "OH" },
+    to:   { name: "La Crosse, WI", lat: 43.8014, lng: -91.2397, state: "WI" },
+    miles: 555,
+    estimatedHours: 9.5,
+    departureTime: "06:00",
+    elevationGainFt: 1100,
+    elevationLossFt: 1200,
+    hotelId: "hotel-c2",
+    warnings: [
+      { id: "c-warn-2-1", day: 2, type: "traffic", severity: "warning", message: "Chicago metro — aim to pass through before 7 AM or after 9 AM. Rush hour with a UHaul + trailer can cost 2+ hours.", icon: "⚠️" },
+      { id: "c-warn-2-2", day: 2, type: "toll",    severity: "info",    message: "Illinois Tollway (~$5)", icon: "🛣️" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 3,
+    from: { name: "La Crosse, WI",  lat: 43.8014, lng: -91.2397,  state: "WI" },
+    to:   { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
+    miles: 600,
+    estimatedHours: 10.0,
+    departureTime: "06:00",
+    elevationGainFt: 3400,
+    elevationLossFt: 1100,
+    hotelId: "hotel-c3",
+    warnings: [
+      { id: "c-warn-3-1", day: 3, type: "fuel", severity: "caution", message: "Gas stations become sparse past Sioux Falls. Fill up before leaving the city.", icon: "⛽" },
+    ],
+    note: "",
+    completed: false,
+  },
+  {
+    number: 4,
+    from: { name: "Rapid City, SD", lat: 44.0805, lng: -103.2310, state: "SD" },
+    to:   { name: "Laurel, MT",     lat: 45.6658, lng: -108.7690, state: "MT" },
+    miles: 330,
+    estimatedHours: 6.0,
+    departureTime: "07:00",
+    elevationGainFt: 4800,
+    elevationLossFt: 4600,
+    hotelId: "hotel-c4",
+    warnings: [
+      { id: "c-warn-4-1", day: 4, type: "fuel",      severity: "caution", message: "Long fuel gaps past Rapid City into Wyoming. Keep tank above half at all times.", icon: "⛽" },
+      { id: "c-warn-4-2", day: 4, type: "elevation", severity: "caution", message: "Bighorn Mountains near Sheridan, WY reach ~8,000 ft. Take grades slow with trailer.", icon: "⛰️" },
+    ],
+    note: "Shorter miles, but the Bighorn crossing makes this the most demanding stretch of the trip. Enjoy the views!",
+    completed: false,
+  },
+  {
+    number: 5,
+    from: { name: "Laurel, MT",  lat: 45.6658, lng: -108.7690, state: "MT" },
+    to:   { name: "Spokane, WA", lat: 47.6588, lng: -117.426,  state: "WA" },
+    miles: 400,
+    estimatedHours: 6.5,
+    departureTime: "07:00",
+    elevationGainFt: 2800,
+    elevationLossFt: 3900,
+    hotelId: null,
+    warnings: [],
+    note: "",
+    completed: false,
+  },
+]
+
+export const HOTELS_C = [
+  { ...HOTELS_B[0], id: 'hotel-c1' },  // Hampton Inn Maumee       (Night 1)
+  { ...HOTELS_B[1], id: 'hotel-c2' },  // Gundersen Hotel La Crosse (Night 2)
+  { ...HOTELS_B[2], id: 'hotel-c3' },  // Hampton Inn Rapid City    (Night 3, with alternatives)
+  { ...HOTELS[3],   id: 'hotel-c4' },  // BW Yellowstone Crossing Laurel (Night 4, Plan A hotel)
 ]
 
 // ---------------------------------------------------------------------------
