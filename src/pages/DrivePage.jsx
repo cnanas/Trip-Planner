@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
-  Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Tag,
+  Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Tag, Clock,
 } from 'lucide-react'
 import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
@@ -335,6 +335,18 @@ export default function DrivePage() {
             {calcArrival(departureTime, day.estimatedHours)}
           </span>
         </div>
+
+        {day.timezoneChange && (
+          <div className="flex items-center gap-2 pt-1 border-t border-[#e2e8f0]">
+            <Clock size={13} className="text-[#7c3aed] shrink-0" />
+            <span className="text-xs text-[#64748b]">
+              {day.timezoneChange.from} → {day.timezoneChange.to} near {day.timezoneChange.near}
+            </span>
+            <span className="text-xs font-mono font-bold text-[#7c3aed] ml-auto">
+              +{day.timezoneChange.gain}h
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Warnings */}

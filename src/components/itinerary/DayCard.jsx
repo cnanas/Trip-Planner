@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useTripStore } from '../../store/tripStore'
-import { AlertTriangle, MapPin, CheckSquare, Square, Navigation } from 'lucide-react'
+import { AlertTriangle, MapPin, CheckSquare, Square, Navigation, Clock } from 'lucide-react'
 import HotelCard from './HotelCard'
 
 function buildDirectionsUrl(day, hotel) {
@@ -113,6 +113,15 @@ export default function DayCard({ day, hotel, warnings = [], stops = [], isSelec
                   <span className="flex items-center gap-1 text-xs text-[#64748b]">
                     <MapPin size={11} />
                     {stops.length}
+                  </span>
+                </>
+              )}
+              {day.timezoneChange && (
+                <>
+                  <span className="text-[#e2e8f0]">·</span>
+                  <span className="flex items-center gap-0.5 text-[10px] font-semibold text-[#7c3aed] bg-[#f5f3ff] border border-[#ddd6fe] px-1.5 py-0.5 rounded-full">
+                    <Clock size={9} className="shrink-0" />
+                    {day.timezoneChange.from}→{day.timezoneChange.to} +{day.timezoneChange.gain}h
                   </span>
                 </>
               )}

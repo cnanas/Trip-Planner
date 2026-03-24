@@ -66,6 +66,7 @@ export const DAYS = [
     departureTime: "06:00",
     elevationGainFt: 1200,
     elevationLossFt: 1000,
+    timezoneChange: { from: 'ET', to: 'CT', gain: 1, near: 'Gary, IN' },
     hotelId: "hotel-2",
     warnings: [
       {
@@ -97,6 +98,7 @@ export const DAYS = [
     departureTime: "07:00",
     elevationGainFt: 2500,
     elevationLossFt: 900,
+    timezoneChange: { from: 'CT', to: 'MT', gain: 1, near: 'Presho, SD' },
     hotelId: "hotel-3",
     warnings: [
       {
@@ -151,6 +153,7 @@ export const DAYS = [
     departureTime: "07:00",
     elevationGainFt: 2800,
     elevationLossFt: 3900,
+    timezoneChange: { from: 'MT', to: 'PT', gain: 1, near: 'Lookout Pass, MT/ID' },
     hotelId: null,
     warnings: [],
     note: "",
@@ -488,6 +491,7 @@ export const DAYS_B = [
     departureTime: "06:00",
     elevationGainFt: 1100,
     elevationLossFt: 1200,
+    timezoneChange: { from: 'ET', to: 'CT', gain: 1, near: 'Gary, IN' },
     hotelId: "hotel-b2",
     warnings: [
       { id: "b-warn-2-1", day: 2, type: "traffic", severity: "warning", message: "Chicago metro — aim to pass through before 7 AM or after 9 AM. Rush hour with a UHaul + trailer can cost 2+ hours.", icon: "⚠️" },
@@ -505,6 +509,7 @@ export const DAYS_B = [
     departureTime: "06:00",
     elevationGainFt: 3400,
     elevationLossFt: 1100,
+    timezoneChange: { from: 'CT', to: 'MT', gain: 1, near: 'Murdo, SD' },
     hotelId: "hotel-b3",
     warnings: [
       { id: "b-warn-3-1", day: 3, type: "fuel", severity: "caution", message: "Gas stations become sparse past Sioux Falls. Fill up before leaving the city.", icon: "⛽" },
@@ -538,6 +543,7 @@ export const DAYS_B = [
     departureTime: "08:00",
     elevationGainFt: 2200,
     elevationLossFt: 5100,
+    timezoneChange: { from: 'MT', to: 'PT', gain: 1, near: 'Lookout Pass, MT/ID' },
     hotelId: null,
     warnings: [],
     note: "Easy final morning — arrive by early afternoon and start settling in!",
