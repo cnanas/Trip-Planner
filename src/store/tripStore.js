@@ -23,13 +23,13 @@ export const useTripStore = create(
 
       init: async () => {
         const data = await loadState('trip')
-        if (data) set({
-          userNotes: data.userNotes ?? {},
-          completedDays: data.completedDays ?? [],
-          avgMpg: data.avgMpg ?? 9,
-          gasPricePerGallon: data.gasPricePerGallon ?? 3.50,
-          departureDate: data.departureDate ?? null,
-          departureTimes: data.departureTimes ?? {},
+        set({
+          userNotes: data?.userNotes ?? {},
+          completedDays: data?.completedDays ?? [],
+          avgMpg: data?.avgMpg ?? 9,
+          gasPricePerGallon: data?.gasPricePerGallon ?? 3.50,
+          departureDate: data?.departureDate ?? null,
+          departureTimes: data?.departureTimes ?? {},
         })
       },
 

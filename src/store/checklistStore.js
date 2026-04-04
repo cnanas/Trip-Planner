@@ -9,7 +9,7 @@ export const useChecklistStore = create(
 
       init: async () => {
         const data = await loadState('checklist')
-        if (data) set({ checked: data })
+        set({ checked: data ?? {} })
       },
 
       toggle: (id) => {

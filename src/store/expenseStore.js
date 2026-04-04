@@ -14,9 +14,9 @@ export const useExpenseStore = create(
 
       init: async () => {
         const data = await loadState('expenses')
-        if (data) set({
-          expenses: data.expenses ?? [],
-          budget: data.budget ?? DEFAULT_BUDGET,
+        set({
+          expenses: data?.expenses ?? [],
+          budget: data?.budget ?? DEFAULT_BUDGET,
         })
       },
 

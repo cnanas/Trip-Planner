@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { loadState, saveState } from '../lib/db'
+import { getTripCode } from '../lib/tripCode'
 
 function uid() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36)
@@ -22,11 +23,12 @@ export const useReceiptStore = create(
 
       init: async () => {
         const data = await loadState('receipts')
-        if (Array.isArray(data)) set({ receipts: data })
+        set({ receipts: Array.isArray(data) ? data : [] })
       },
 
       addReceipt: async (file, expenseId = null) => {
-        const id = uid()
+        const code = getTripCode()
+        const id = code ? `${code}:${uid()}` : uid()
         const base64 = await fileToBase64(file)
 
         await fetch('/api/receipt-blob', {

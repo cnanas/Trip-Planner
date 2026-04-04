@@ -1,5 +1,6 @@
 import { Map } from 'lucide-react'
 import ThemePicker from '../ThemePicker'
+import TripCodePicker from '../TripCodePicker'
 import { useTheme } from '../../context/ThemeContext'
 
 export default function TopBar({ title = 'Road Trip' }) {
@@ -19,7 +20,10 @@ export default function TopBar({ title = 'Road Trip' }) {
         </div>
         <span className="font-semibold text-sm text-[#0f172a]">{title}</span>
       </div>
-      <ThemePicker />
+      <div className="flex items-center gap-2">
+        <TripCodePicker compact />
+        <ThemePicker />
+      </div>
     </header>
   )
 }

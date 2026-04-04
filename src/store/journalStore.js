@@ -37,9 +37,9 @@ export const useJournalStore = create(
 
       init: async () => {
         const data = await loadState('journal')
-        if (data) set({
-          entries: data.entries ?? DEFAULT_ENTRIES,
-          dogs: data.dogs ?? DEFAULT_DOGS,
+        set({
+          entries: data?.entries ?? DEFAULT_ENTRIES,
+          dogs: data?.dogs ?? DEFAULT_DOGS,
         })
       },
 

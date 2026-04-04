@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
+import { TripCodeProvider, useTripCode } from './context/TripCodeContext'
 import AppShell from './components/layout/AppShell'
 import DBInit from './components/DBInit'
 import AuthGate, { isAuthed } from './components/AuthGate'
@@ -18,11 +19,17 @@ function PrivateRoute({ children }) {
   return children
 }
 
+function DBInitBridge() {
+  const { tripCode } = useTripCode()
+  return <DBInit tripCode={tripCode} />
+}
+
 export default function App() {
   return (
+    <TripCodeProvider>
     <ThemeProvider>
     <BrowserRouter>
-      <DBInit />
+      <DBInitBridge />
       <Routes>
         <Route element={<AppShell />}>
           <Route index element={<DrivePage />} />
@@ -36,5 +43,6 @@ export default function App() {
       </Routes>
     </BrowserRouter>
     </ThemeProvider>
+    </TripCodeProvider>
   )
 }

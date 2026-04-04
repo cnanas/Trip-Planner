@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { Navigation, Map, CreditCard, ScanLine, BookOpen, BarChart2, ClipboardList } from 'lucide-react'
 import ThemePicker from '../ThemePicker'
+import TripCodePicker from '../TripCodePicker'
 import { useTheme } from '../../context/ThemeContext'
 
 const NAV_ITEMS = [
@@ -28,7 +29,7 @@ export default function Sidebar() {
         <ThemePicker />
       </div>
 
-      <nav className="flex flex-col gap-0.5 p-2 flex-1">
+      <nav className="flex flex-col gap-0.5 p-2 flex-1 overflow-y-auto">
         {NAV_ITEMS.map(({ to, Icon, label }) => (
           <NavLink
             key={to}
@@ -50,6 +51,10 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      <div className="p-2 border-t border-[#e2e8f0]">
+        <TripCodePicker />
+      </div>
     </aside>
   )
 }

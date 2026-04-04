@@ -5,7 +5,7 @@ import { useJournalStore } from '../store/journalStore'
 import { useTripStore } from '../store/tripStore'
 import { useReceiptStore } from '../store/receiptStore'
 
-export default function DBInit() {
+export default function DBInit({ tripCode }) {
   const initChecklist = useChecklistStore((s) => s.init)
   const initExpenses = useExpenseStore((s) => s.init)
   const initJournal = useJournalStore((s) => s.init)
@@ -18,7 +18,7 @@ export default function DBInit() {
     initJournal()
     initTrip()
     initReceipts()
-  }, [])
+  }, [tripCode])
 
   return null
 }
