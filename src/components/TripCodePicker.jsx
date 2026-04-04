@@ -22,6 +22,8 @@ export default function TripCodePicker({ compact = false }) {
   function save() {
     setTripCode(value)
     setEditing(false)
+    // Reload so the module-level itinerary router picks up the new trip code
+    window.location.reload()
   }
 
   function cancel() {
