@@ -2,11 +2,15 @@ import { useRef } from 'react'
 import { useTripStore } from '../../store/tripStore'
 import { AlertTriangle, MapPin, CheckSquare, Square, Navigation, Clock } from 'lucide-react'
 import HotelCard from './HotelCard'
+import { buildGoogleMapsUrl } from '../../lib/maps'
 
-function buildDirectionsUrl(day, hotel) {
-  const origin = `${day.from.lat},${day.from.lng}`
-  const dest = hotel ? encodeURIComponent(hotel.address) : `${day.to.lat},${day.to.lng}`
-  return `https://www.google.com/maps/dir/${origin}/${dest}`
+function buildDirectionsUrl(day, hotel, stops = []) {
+  const points = [
+    { lat: day.from.lat, lng: day.from.lng },
+    ...stops.filter(s => !s.detour).map(s => s.name),
+    hotel ? hotel.address : { lat: day.to.lat, lng: day.to.lng },
+  ]
+  return buildGoogleMapsUrl(points)
 }
 
 const SEVERITY_STYLES = {
@@ -77,7 +81,7 @@ export default function DayCard({ day, hotel, warnings = [], stops = [], isSelec
                 {day.from.name.split(',')[0]} → {day.to.name.split(',')[0]}
               </span>
               <a
-                href={buildDirectionsUrl(day, hotel)}
+                href={buildDirectionsUrl(day, hotel, stops)}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={e => e.stopPropagation()}

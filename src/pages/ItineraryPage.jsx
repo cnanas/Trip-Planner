@@ -6,14 +6,15 @@ import {
   STOPS, STOPS as STOPS_NOTABLE,
   STOPS_A, STOPS_B,
   TRIP_SUMMARY, WARNING_MARKERS,
+  PLAN_LABELS,
 } from '../data/itinerary'
 import RouteTimeline from '../components/itinerary/RouteTimeline'
 
 const TripMap = lazy(() => import('../components/itinerary/TripMap'))
 
 const PLANS = {
-  A: { label: 'Plan A', sublabel: 'Original', days: DAYS,   hotels: HOTELS,   routeStops: STOPS_A, summary: { miles: 2480, day5: '~390 mi · 6.5h' } },
-  B: { label: 'Plan B', sublabel: '+1hr/day', days: DAYS_B, hotels: HOTELS_B, routeStops: STOPS_B, summary: { miles: 2485, day5: '~195 mi · 3.5h' } },
+  A: { ...PLAN_LABELS.A, days: DAYS,   hotels: HOTELS,   routeStops: STOPS_A },
+  B: { ...PLAN_LABELS.B, days: DAYS_B, hotels: HOTELS_B, routeStops: STOPS_B },
 }
 
 export default function ItineraryPage() {
@@ -59,17 +60,17 @@ export default function ItineraryPage() {
         {/* Stats strip */}
         <div className="flex items-center gap-4 bg-white rounded-2xl px-4 py-3 border border-[#e2e8f0] shadow-sm">
           <div className="text-center">
-            <div className="font-mono text-sm font-bold text-[#f97316]">{plan.summary.miles.toLocaleString()}</div>
+            <div className="font-mono text-sm font-bold text-[#f97316]">{plan.totalMiles.toLocaleString()}</div>
             <div className="text-[10px] text-[#94a3b8]">miles</div>
           </div>
           <div className="w-px h-8 bg-[#e2e8f0]" />
           <div className="text-center">
-            <div className="font-mono text-sm font-bold text-[#0f172a]">{TRIP_SUMMARY.totalDays}</div>
+            <div className="font-mono text-sm font-bold text-[#0f172a]">{plan.days.length}</div>
             <div className="text-[10px] text-[#94a3b8]">days</div>
           </div>
           <div className="w-px h-8 bg-[#e2e8f0]" />
           <div className="flex-1 text-right">
-            <div className="font-mono text-xs font-bold text-[#22c55e]">{plan.summary.day5}</div>
+            <div className="font-mono text-xs font-bold text-[#22c55e]">{plan.finalDaySummary}</div>
             <div className="text-[10px] text-[#94a3b8]">final day</div>
           </div>
         </div>
@@ -121,7 +122,7 @@ export default function ItineraryPage() {
               </button>
             ))}
           </div>
-          <span className="text-xs text-[#64748b] ml-auto">{plan.summary.miles.toLocaleString()} mi · Day 5: {plan.summary.day5}</span>
+          <span className="text-xs text-[#64748b] ml-auto">{plan.totalMiles.toLocaleString()} mi · Final day: {plan.finalDaySummary}</span>
         </div>
 
         <div className="flex-1">

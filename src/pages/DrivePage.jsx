@@ -3,15 +3,15 @@ import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
   Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Tag, Clock,
 } from 'lucide-react'
-import { DAYS, DAYS_B, HOTELS, HOTELS_B } from '../data/itinerary'
+import { DAYS, DAYS_B, HOTELS, HOTELS_B, PLAN_LABELS } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
 import { useTheme } from '../context/ThemeContext'
 
 const DEPARTURE = '2026-03-22'
 
 const PLANS = {
-  A: { label: 'Plan A', sublabel: 'Original',  days: DAYS,   hotels: HOTELS   },
-  B: { label: 'Plan B', sublabel: '+1hr/day',  days: DAYS_B, hotels: HOTELS_B },
+  A: { ...PLAN_LABELS.A, days: DAYS,   hotels: HOTELS   },
+  B: { ...PLAN_LABELS.B, days: DAYS_B, hotels: HOTELS_B },
 }
 
 function getCurrentDay(totalDays) {

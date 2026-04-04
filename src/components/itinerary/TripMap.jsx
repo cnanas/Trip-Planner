@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { STOPS_A, REST_STOPS } from '../../data/itinerary'
+import { buildGoogleMapsUrl } from '../../lib/maps'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -11,7 +12,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 })
 
-const GOOGLE_MAPS_URL = 'https://maps.app.goo.gl/XYHsh2sXKodcyeMB8'
 
 // Build the ordered list of points for a leg, including any via waypoints
 function legPoints(from, to) {
@@ -254,7 +254,7 @@ export default function TripMap({ days, hotels, warningMarkers = [], restStops =
 
       {/* Google Maps button */}
       <a
-        href={GOOGLE_MAPS_URL}
+        href={buildGoogleMapsUrl(routeStops)}
         target="_blank"
         rel="noopener noreferrer"
         style={{ zIndex: 1000 }}

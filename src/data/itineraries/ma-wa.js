@@ -1,5 +1,10 @@
-// src/data/itinerary.js
-// Seed data for Sunderland, MA → Spokane, WA — 5-Day Moving Trip via I-90
+// src/data/itineraries/ma-wa.js
+// Sunderland, MA → Spokane, WA — 5-Day Moving Trip via I-90
+
+export const PLAN_LABELS = {
+  A: { label: 'Plan A', sublabel: 'Original',   totalMiles: 2480, finalDaySummary: '~390 mi · 6.5h' },
+  B: { label: 'Plan B', sublabel: '+1hr/day',   totalMiles: 2485, finalDaySummary: '~195 mi · 3.5h' },
+}
 
 export const TRIP_META = {
   title: "Sunderland, MA → Spokane, WA",

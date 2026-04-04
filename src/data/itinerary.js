@@ -18,6 +18,7 @@ const code = typeof localStorage !== 'undefined'
 const trip = ITINERARIES[code] ?? maWa
 
 export const {
+  PLAN_LABELS,
   TRIP_META,
   TRIP_SUMMARY,
   DAYS,
