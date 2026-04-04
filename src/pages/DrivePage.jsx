@@ -14,12 +14,12 @@ const PLANS = {
   B: { label: 'Plan B', sublabel: '+1hr/day',  days: DAYS_B, hotels: HOTELS_B },
 }
 
-function getCurrentDay() {
+function getCurrentDay(totalDays) {
   const today = new Date()
   const dep   = new Date(DEPARTURE)
   const diff  = Math.floor((today - dep) / (1000 * 60 * 60 * 24))
   if (diff < 0) return 1
-  if (diff >= 5) return 5
+  if (diff >= totalDays) return totalDays
   return diff + 1
 }
 
@@ -241,7 +241,8 @@ function EmergencyNumbers() {
 export default function DrivePage() {
   const { accent } = useTheme()
   const [planKey,      setPlanKey]      = useState('A')
-  const [dayNum,       setDayNum]       = useState(getCurrentDay)
+  const totalDays = DAYS.length
+  const [dayNum,       setDayNum]       = useState(() => getCurrentDay(totalDays))
   const [customTimes,  setCustomTimes]  = useState({})
 
   const plan  = PLANS[planKey]
@@ -286,11 +287,11 @@ export default function DrivePage() {
         </button>
         <div className="text-center">
           <div key={dayNum} className="day-pop text-3xl font-bold font-mono leading-none" style={{ color: accent }}>Day {dayNum}</div>
-          <div className="text-xs text-[#94a3b8] mt-1">of 5</div>
+          <div className="text-xs text-[#94a3b8] mt-1">of {totalDays}</div>
         </div>
         <button
-          onClick={() => setDayNum(d => Math.min(5, d + 1))}
-          disabled={dayNum === 5}
+          onClick={() => setDayNum(d => Math.min(totalDays, d + 1))}
+          disabled={dayNum === totalDays}
           className="p-1.5 rounded-lg text-[#94a3b8] disabled:opacity-30 hover:bg-[#f8fafc] transition-colors"
         >
           <ChevronRight size={18} />
@@ -374,7 +375,7 @@ export default function DrivePage() {
       ) : (
         <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-2xl p-5 text-center">
           <p className="text-sm font-semibold text-[#15803d]">You've arrived!</p>
-          <p className="text-xs text-[#16a34a] mt-1">Welcome to Spokane, WA 🎉</p>
+          <p className="text-xs text-[#16a34a] mt-1">Welcome to {DAYS[totalDays - 1].to.name} 🎉</p>
         </div>
       )}
 
