@@ -3,7 +3,7 @@ import {
   ArrowRight, Fuel, UtensilsCrossed, Coffee, MapPin,
   Phone, PhoneCall, ChevronLeft, ChevronRight, ChevronDown, Navigation, AlertTriangle, Tag, Clock,
 } from 'lucide-react'
-import { DAYS, DAYS_B, HOTELS, HOTELS_B, PLAN_LABELS } from '../data/itinerary'
+import { DAYS, DAYS_B, HOTELS, HOTELS_B, PLAN_LABELS, EMERGENCY_NUMBERS } from '../data/itinerary'
 import WeatherBadge from '../components/WeatherBadge'
 import { useTheme } from '../context/ThemeContext'
 
@@ -19,7 +19,7 @@ function getCurrentDay(totalDays) {
   const dep   = new Date(DEPARTURE)
   const diff  = Math.floor((today - dep) / (1000 * 60 * 60 * 24))
   if (diff < 0) return 1
-  if (diff >= totalDays) return totalDays
+  if (diff >= totalDays) return 1
   return diff + 1
 }
 
@@ -59,30 +59,6 @@ const WARN_STYLE = {
   caution: { bg: '#fff7ed', border: '#fed7aa', text: '#c2410c' },
 }
 
-const EMERGENCY_NUMBERS = [
-  {
-    id: 'uhaul',
-    label: 'UHaul Roadside Assistance',
-    badge: '24/7',
-    phone: '18005280355',
-    phoneDisplay: '1-800-528-0355',
-    notes: [
-      'For flat tires, breakdowns, or getting stuck.',
-      'Have your contract number and exact location ready.',
-      'Avg. wait time after claim: ~2–2.5 hrs — plan ahead in remote areas.',
-    ],
-    extra: 'Also: UHaul app or uhaul.com/help to submit photos and track your request.',
-  },
-  {
-    id: 'leasing',
-    label: 'Leasing Office',
-    badge: null,
-    phone: '5097693877',
-    phoneDisplay: '509-769-3877',
-    notes: [],
-    extra: null,
-  },
-]
 
 function HotelSection({ hotel, accent }) {
   const [altOpen, setAltOpen] = useState(false)
@@ -406,7 +382,7 @@ export default function DrivePage() {
       ) : null}
 
       {/* Emergency Numbers */}
-      <EmergencyNumbers />
+      {EMERGENCY_NUMBERS.length > 0 && <EmergencyNumbers />}
 
     </div>
   )

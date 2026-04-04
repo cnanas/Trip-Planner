@@ -788,3 +788,32 @@ export const MILESTONE_PRESETS = [
   "Crossed into Washington!",
   "Arrived in Spokane! 🏠✨",
 ]
+
+// ---------------------------------------------------------------------------
+// EMERGENCY NUMBERS
+// ---------------------------------------------------------------------------
+
+export const EMERGENCY_NUMBERS = [
+  {
+    id: 'uhaul',
+    label: 'UHaul Roadside Assistance',
+    badge: '24/7',
+    phone: '18005280355',
+    phoneDisplay: '1-800-528-0355',
+    notes: [
+      'For flat tires, breakdowns, or getting stuck.',
+      'Have your contract number and exact location ready.',
+      'Avg. wait time after claim: ~2–2.5 hrs — plan ahead in remote areas.',
+    ],
+    extra: 'Also: UHaul app or uhaul.com/help to submit photos and track your request.',
+  },
+  {
+    id: 'leasing',
+    label: 'Leasing Office',
+    badge: null,
+    phone: '5097693877',
+    phoneDisplay: '509-769-3877',
+    notes: [],
+    extra: null,
+  },
+]

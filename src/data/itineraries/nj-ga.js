@@ -487,3 +487,5 @@ export const MILESTONE_PRESETS = [
   "Almost there — Gainesville!",
   "Arrived in Dahlonega! 🏡✨",
 ]
+
+export const EMERGENCY_NUMBERS = []

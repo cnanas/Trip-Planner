@@ -38,4 +38,5 @@ export const {
   FUEL_DEFAULTS,
   DOG_LOG_TYPES,
   MILESTONE_PRESETS,
+  EMERGENCY_NUMBERS,
 } = trip
