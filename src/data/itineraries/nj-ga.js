@@ -489,3 +489,6 @@ export const MILESTONE_PRESETS = [
 ]
 
 export const EMERGENCY_NUMBERS = []
+
+export const CHECKLIST_TIMELINE = []
+export const CHECKLIST_PHASES = []

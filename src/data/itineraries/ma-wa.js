@@ -817,3 +817,82 @@ export const EMERGENCY_NUMBERS = [
     extra: null,
   },
 ]
+
+// ---------------------------------------------------------------------------
+// CHECKLIST
+// ---------------------------------------------------------------------------
+
+export const CHECKLIST_TIMELINE = [
+  { label: 'Today',          date: 'Thu Mar 19', type: 'today'     },
+  { label: 'Pack & Prep',    date: 'Fri – Sat',  type: 'default'   },
+  { label: 'Departure',      date: 'Sun Mar 23',  type: 'departure' },
+  { label: 'Arrive Spokane', date: '~Fri Mar 28', type: 'arrive'    },
+  { label: '30-Day Deadline',date: 'By Apr 27',   type: 'deadline'  },
+]
+
+export const CHECKLIST_PHASES = [
+  {
+    id: 'phase1',
+    title: 'Before You Leave',
+    subtitle: 'Complete by Saturday March 22nd',
+    accent: '#f97316',
+    accentBg: '#fff7ed',
+    items: [
+      { id: '1',  title: 'Locate your MA vehicle title',                   note: "You'll need this to register in WA. If a lender holds it, get their contact info so they can fax a copy to the WA DOL when the time comes.",                                                                                    tag: { label: 'Action Required', type: 'action'   } },
+      { id: '2',  title: 'Confirm your MA excise tax is fully paid',        note: "You mentioned it's already paid — just double-check there are no outstanding bills to avoid any collection action or license issues while you're in transit.",                                                                   tag: { label: 'Already Done',    type: 'done'     } },
+      { id: '3',  title: 'Update your address with USPS (mail forwarding)', note: 'Do this at usps.com — takes 5 minutes. Forward mail from Sunderland address to your new Spokane address.',                                                                                                                      tag: { label: 'Action Required', type: 'action'   } },
+      { id: '4',  title: 'Notify your auto insurance company of the move',  note: "Tell them you're relocating to Spokane, WA. Your rate may change. Make sure you're covered during the drive and upon arrival.",                                                                                                 tag: { label: 'Time-Sensitive',  type: 'deadline' } },
+      { id: '5',  title: "Notify your bank(s) of address change",           note: 'Prevents fraud flags on your cards while traveling and ensures statements reach you.',                                                                                                                                           tag: { label: 'Action Required', type: 'action'   } },
+      { id: '6',  title: 'Notify employer of new address (for tax withholding)', note: 'Important for state income tax purposes — WA has no state income tax, so your withholding will change.',                                                                                                                   tag: { label: 'Tax Impact',      type: 'money'    } },
+    ],
+  },
+  {
+    id: 'phase-utilities',
+    title: 'Utilities & Insurance',
+    subtitle: 'Set up new, shut down old',
+    accent: '#8b5cf6',
+    accentBg: '#f5f3ff',
+    items: [
+      { id: 'u1', title: 'New Apartment — Set up electricity',       note: 'Contact the Spokane utility provider to establish service at your new address before or shortly after arrival.',                                                                         tag: { label: 'New Apartment',     type: 'action'   } },
+      { id: 'u2', title: 'New Apartment — Set up renters insurance',  note: 'Get a renters insurance policy for the Spokane apartment. Many providers (Lemonade, State Farm, etc.) let you start same-day online.',                                                 tag: { label: 'New Apartment',     type: 'action'   } },
+      { id: 'u3', title: 'Current Apartment — Shut down electricity', note: 'Call or go online to cancel/transfer your Sunderland electricity service. Set the end date to your move-out day.',                                                                     tag: { label: 'Current Apartment', type: 'deadline' } },
+      { id: 'u4', title: 'Current Apartment — Cancel renters insurance', note: 'Contact your current renters insurance provider to cancel your policy effective your move-out date. You may be owed a prorated refund.',                                            tag: { label: 'Current Apartment', type: 'money'    } },
+    ],
+  },
+  {
+    id: 'phase2',
+    title: 'The Drive',
+    subtitle: '5-day route along I-90 West · Sun Mar 23 → ~Fri Mar 28',
+    accent: '#f59e0b',
+    accentBg: '#fffbeb',
+    items: [
+      { id: '7',  title: 'Drive safely to Spokane', note: 'Your pet-friendly hotel stops are planned along I-90 West. Enjoy the ride — this is the easy part!', tag: { label: 'Enjoy It', type: 'optional' } },
+    ],
+  },
+  {
+    id: 'phase3',
+    title: 'After Arrival — Within 30 Days',
+    subtitle: 'Deadline: ~April 27, 2026 · Do in this order',
+    accent: '#2563eb',
+    accentBg: '#eff6ff',
+    items: [
+      { id: '8',  title: "Step 1 — Pre-apply for WA driver's license online",          note: "Go to dol.wa.gov and pre-apply to save time at the office. You'll get a driver's license number and can schedule your appointment.",                                                                                                                                   tag: { label: 'Do This First', type: 'action' } },
+      { id: '9',  title: "Step 2 — Get your WA driver's license at Spokane DOL",       note: "Bring: your MA driver's license, Social Security number, and 2 proofs of WA residency (lease, utility bill, or bank statement with Spokane address). You won't need to retake any tests. Fee: $54 for standard Class D license.",                                     tag: { label: 'In-Person',     type: 'form'   } },
+      { id: '10', title: 'Step 3 — Register your Tesla at WA licensing office',         note: "Must have your WA license first. Bring: MA vehicle title (or lender fax), your new WA driver's license, odometer reading, and payment (~$225 for EV fees + standard registration).",                                                                                  tag: { label: 'Form TD-420-001', type: 'form' } },
+      { id: '11', title: 'Update voter registration to WA',                             note: "You can do this at the DOL office when getting your license — just say yes when they ask. Or go to vote.wa.gov anytime.",                                                                                                                                               tag: { label: 'Optional but Easy', type: 'optional' } },
+    ],
+  },
+  {
+    id: 'phase4',
+    title: 'MA Loose Ends',
+    subtitle: 'Handle once settled in Spokane · No hard deadline',
+    accent: '#94a3b8',
+    accentBg: '#f8fafc',
+    items: [
+      { id: '12', title: 'Mail MA license plates back to the RMV',         note: "Mail plates to MA RMV with a written cancellation request. They'll send you a plate return receipt, which you'll need for your excise abatement. Address: MA RMV, P.O. Box 55889, Boston, MA 02205.",                                                                              tag: { label: 'Mail It In',       type: 'action'   } },
+      { id: '13', title: 'File MA Excise Tax Abatement for prorated refund', note: "Since you already paid 2026 excise, you're owed a refund for months after you last registered in MA. File State Tax Form 126-MVE with your town's assessor. Attach: plate return receipt + copy of your new WA registration. You have up to 1 year to file.",                   tag: { label: 'Money Back',       type: 'money'    } },
+      { id: '14', title: 'Update MA voter registration (cancel or transfer)', note: "Once registered in WA, notify your MA town clerk to cancel your MA registration. Not legally required but good practice.",                                                                                                                                                         tag: { label: 'Optional',         type: 'optional' } },
+      { id: '15', title: 'Update IRS address (file Form 8822)',              note: "If you're expecting a tax refund or correspondence, file IRS Form 8822 (Change of Address) to make sure it reaches your new Spokane address.",                                                                                                                                     tag: { label: 'Form IRS 8822',    type: 'form'     } },
+    ],
+  },
+]

@@ -1,177 +1,8 @@
-import { RotateCcw, CheckSquare, Square } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { RotateCcw, CheckSquare, Square, Plus, Trash2, ChevronDown } from 'lucide-react'
 import { useChecklistStore } from '../store/checklistStore'
-
-// ── Data ──────────────────────────────────────────────────────────────────────
-
-const TIMELINE = [
-  { label: 'Today',         date: 'Thu Mar 19', type: 'today'     },
-  { label: 'Pack & Prep',   date: 'Fri – Sat',  type: 'default'   },
-  { label: 'Departure',     date: 'Sun Mar 23',  type: 'departure' },
-  { label: 'Arrive Spokane',date: '~Fri Mar 28', type: 'arrive'    },
-  { label: '30-Day Deadline',date: 'By Apr 27',  type: 'deadline'  },
-]
-
-const PHASES = [
-  {
-    id: 'phase1',
-    title: 'Before You Leave',
-    subtitle: 'Complete by Saturday March 22nd',
-    accent: '#f97316',
-    accentBg: '#fff7ed',
-    items: [
-      {
-        id: '1',
-        title: 'Locate your MA vehicle title',
-        note: "You'll need this to register in WA. If a lender holds it, get their contact info so they can fax a copy to the WA DOL when the time comes.",
-        tag: { label: 'Action Required', type: 'action' },
-      },
-      {
-        id: '2',
-        title: 'Confirm your MA excise tax is fully paid',
-        note: "You mentioned it's already paid — just double-check there are no outstanding bills to avoid any collection action or license issues while you're in transit.",
-        tag: { label: 'Already Done', type: 'done' },
-      },
-      {
-        id: '3',
-        title: 'Update your address with USPS (mail forwarding)',
-        note: 'Do this at usps.com — takes 5 minutes. Forward mail from Sunderland address to your new Spokane address.',
-        tag: { label: 'Action Required', type: 'action' },
-      },
-      {
-        id: '4',
-        title: 'Notify your auto insurance company of the move',
-        note: "Tell them you're relocating to Spokane, WA. Your rate may change. Make sure you're covered during the drive and upon arrival.",
-        tag: { label: 'Time-Sensitive', type: 'deadline' },
-      },
-      {
-        id: '5',
-        title: "Notify your bank(s) of address change",
-        note: 'Prevents fraud flags on your cards while traveling and ensures statements reach you.',
-        tag: { label: 'Action Required', type: 'action' },
-      },
-      {
-        id: '6',
-        title: 'Notify employer of new address (for tax withholding)',
-        note: 'Important for state income tax purposes — WA has no state income tax, so your withholding will change.',
-        tag: { label: 'Tax Impact', type: 'money' },
-      },
-    ],
-  },
-  {
-    id: 'phase-utilities',
-    title: 'Utilities & Insurance',
-    subtitle: 'Set up new, shut down old',
-    accent: '#8b5cf6',
-    accentBg: '#f5f3ff',
-    items: [
-      {
-        id: 'u1',
-        title: 'New Apartment — Set up electricity',
-        note: 'Contact the Spokane utility provider to establish service at your new address before or shortly after arrival.',
-        tag: { label: 'New Apartment', type: 'action' },
-      },
-      {
-        id: 'u2',
-        title: 'New Apartment — Set up renters insurance',
-        note: 'Get a renters insurance policy for the Spokane apartment. Many providers (Lemonade, State Farm, etc.) let you start same-day online.',
-        tag: { label: 'New Apartment', type: 'action' },
-      },
-      {
-        id: 'u3',
-        title: 'Current Apartment — Shut down electricity',
-        note: 'Call or go online to cancel/transfer your Sunderland electricity service. Set the end date to your move-out day.',
-        tag: { label: 'Current Apartment', type: 'deadline' },
-      },
-      {
-        id: 'u4',
-        title: 'Current Apartment — Cancel renters insurance',
-        note: 'Contact your current renters insurance provider to cancel your policy effective your move-out date. You may be owed a prorated refund.',
-        tag: { label: 'Current Apartment', type: 'money' },
-      },
-    ],
-  },
-  {
-    id: 'phase2',
-    title: 'The Drive',
-    subtitle: '5-day route along I-90 West · Sun Mar 23 → ~Fri Mar 28',
-    accent: '#f59e0b',
-    accentBg: '#fffbeb',
-    items: [
-      {
-        id: '7',
-        title: 'Drive safely to Spokane',
-        note: 'Your pet-friendly hotel stops are planned along I-90 West. Enjoy the ride — this is the easy part!',
-        tag: { label: 'Enjoy It', type: 'optional' },
-      },
-    ],
-  },
-  {
-    id: 'phase3',
-    title: 'After Arrival — Within 30 Days',
-    subtitle: 'Deadline: ~April 27, 2026 · Do in this order',
-    accent: '#2563eb',
-    accentBg: '#eff6ff',
-    items: [
-      {
-        id: '8',
-        title: 'Step 1 — Pre-apply for WA driver\'s license online',
-        note: 'Go to dol.wa.gov and pre-apply to save time at the office. You\'ll get a driver\'s license number and can schedule your appointment.',
-        tag: { label: 'Do This First', type: 'action' },
-      },
-      {
-        id: '9',
-        title: 'Step 2 — Get your WA driver\'s license at Spokane DOL',
-        note: "Bring: your MA driver's license, Social Security number, and 2 proofs of WA residency (lease, utility bill, or bank statement with Spokane address). You won't need to retake any tests. Fee: $54 for standard Class D license.",
-        tag: { label: 'In-Person', type: 'form' },
-      },
-      {
-        id: '10',
-        title: 'Step 3 — Register your Tesla at WA licensing office',
-        note: "Must have your WA license first. Bring: MA vehicle title (or lender fax), your new WA driver's license, odometer reading, and payment (~$225 for EV fees + standard registration).",
-        tag: { label: 'Form TD-420-001', type: 'form' },
-      },
-      {
-        id: '11',
-        title: 'Update voter registration to WA',
-        note: "You can do this at the DOL office when getting your license — just say yes when they ask. Or go to vote.wa.gov anytime.",
-        tag: { label: 'Optional but Easy', type: 'optional' },
-      },
-    ],
-  },
-  {
-    id: 'phase4',
-    title: 'MA Loose Ends',
-    subtitle: 'Handle once settled in Spokane · No hard deadline',
-    accent: '#94a3b8',
-    accentBg: '#f8fafc',
-    items: [
-      {
-        id: '12',
-        title: 'Mail MA license plates back to the RMV',
-        note: 'Mail plates to MA RMV with a written cancellation request. They\'ll send you a plate return receipt, which you\'ll need for your excise abatement. Address: MA RMV, P.O. Box 55889, Boston, MA 02205.',
-        tag: { label: 'Mail It In', type: 'action' },
-      },
-      {
-        id: '13',
-        title: 'File MA Excise Tax Abatement for prorated refund',
-        note: "Since you already paid 2026 excise, you're owed a refund for months after you last registered in MA. File State Tax Form 126-MVE with your town's assessor. Attach: plate return receipt + copy of your new WA registration. You have up to 1 year to file.",
-        tag: { label: 'Money Back', type: 'money' },
-      },
-      {
-        id: '14',
-        title: 'Update MA voter registration (cancel or transfer)',
-        note: "Once registered in WA, notify your MA town clerk to cancel your MA registration. Not legally required but good practice.",
-        tag: { label: 'Optional', type: 'optional' },
-      },
-      {
-        id: '15',
-        title: 'Update IRS address (file Form 8822)',
-        note: "If you're expecting a tax refund or correspondence, file IRS Form 8822 (Change of Address) to make sure it reaches your new Spokane address.",
-        tag: { label: 'Form IRS 8822', type: 'form' },
-      },
-    ],
-  },
-]
+import { CHECKLIST_PHASES, CHECKLIST_TIMELINE } from '../data/itinerary'
+import { useTheme } from '../context/ThemeContext'
 
 const TAG_STYLES = {
   action:   'bg-[#fff7ed] text-[#f97316]',
@@ -182,7 +13,7 @@ const TAG_STYLES = {
   done:     'bg-[#f0fdf4] text-[#16a34a]',
 }
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+// ── Built-in checklist components ─────────────────────────────────────────────
 
 function TimelineNode({ node }) {
   const dotColors = {
@@ -235,63 +66,259 @@ function CheckItem({ item }) {
         <p className={`text-sm font-medium leading-snug ${checked ? 'line-through text-[#94a3b8]' : 'text-[#0f172a]'}`}>
           {item.title}
         </p>
-        {!checked && (
+        {!checked && item.note && (
           <p className="text-xs text-[#64748b] mt-1 leading-relaxed">{item.note}</p>
         )}
-        <span className={`inline-block mt-2 text-[10px] font-semibold tracking-wide px-2 py-0.5 rounded-full ${TAG_STYLES[item.tag.type]}`}>
-          {item.tag.label}
-        </span>
+        {item.tag && (
+          <span className={`inline-block mt-2 text-[10px] font-semibold tracking-wide px-2 py-0.5 rounded-full ${TAG_STYLES[item.tag.type]}`}>
+            {item.tag.label}
+          </span>
+        )}
       </div>
     </button>
+  )
+}
+
+// ── Custom section components ─────────────────────────────────────────────────
+
+function CustomItem({ sectionId, item }) {
+  const { isChecked, toggle, deleteItem } = useChecklistStore()
+  const checked = isChecked(item.id)
+
+  return (
+    <div className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border transition-all ${
+      checked ? 'bg-[#f8fafc] border-[#e2e8f0] opacity-50' : 'bg-white border-[#e2e8f0] shadow-sm'
+    }`}>
+      <button onClick={() => toggle(item.id)} className="shrink-0">
+        {checked
+          ? <CheckSquare size={17} className="text-[#22c55e]" />
+          : <Square size={17} className="text-[#cbd5e1]" />
+        }
+      </button>
+      <span className={`flex-1 text-sm leading-snug ${checked ? 'line-through text-[#94a3b8]' : 'text-[#0f172a]'}`}>
+        {item.title}
+      </span>
+      <button
+        onClick={() => deleteItem(sectionId, item.id)}
+        className="shrink-0 p-1 rounded-lg text-[#cbd5e1] hover:text-[#ef4444] hover:bg-[#fef2f2] transition-colors"
+      >
+        <Trash2 size={13} />
+      </button>
+    </div>
+  )
+}
+
+function AddItemRow({ sectionId }) {
+  const { addItem } = useChecklistStore()
+  const { accent } = useTheme()
+  const [value, setValue] = useState('')
+  const inputRef = useRef()
+
+  function submit() {
+    const trimmed = value.trim()
+    if (!trimmed) return
+    addItem(sectionId, trimmed)
+    setValue('')
+    inputRef.current?.focus()
+  }
+
+  return (
+    <div className="flex items-center gap-2 mt-1">
+      <input
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter') submit() }}
+        placeholder="Add item..."
+        className="flex-1 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl px-3 py-2 text-sm text-[#0f172a] placeholder-[#cbd5e1] outline-none focus:border-current transition-colors"
+        style={{ '--tw-ring-color': accent }}
+      />
+      <button
+        onClick={submit}
+        disabled={!value.trim()}
+        className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-white disabled:opacity-30 transition-all active:scale-90"
+        style={{ background: accent }}
+      >
+        <Plus size={15} strokeWidth={2.5} />
+      </button>
+    </div>
+  )
+}
+
+function CustomSection({ section }) {
+  const { renameSection, deleteSection } = useChecklistStore()
+  const { isChecked } = useChecklistStore()
+  const { accent } = useTheme()
+  const [editing, setEditing] = useState(false)
+  const [titleVal, setTitleVal] = useState(section.title)
+  const [collapsed, setCollapsed] = useState(false)
+
+  const done = section.items.filter((it) => isChecked(it.id)).length
+
+  function saveTitle() {
+    const trimmed = titleVal.trim()
+    if (trimmed) renameSection(section.id, trimmed)
+    else setTitleVal(section.title)
+    setEditing(false)
+  }
+
+  return (
+    <div className="rounded-2xl border border-[#e2e8f0] bg-white overflow-hidden shadow-sm">
+      {/* Section header */}
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-[#f1f5f9]">
+        {editing ? (
+          <input
+            autoFocus
+            value={titleVal}
+            onChange={(e) => setTitleVal(e.target.value)}
+            onBlur={saveTitle}
+            onKeyDown={(e) => { if (e.key === 'Enter') saveTitle(); if (e.key === 'Escape') { setTitleVal(section.title); setEditing(false) } }}
+            className="flex-1 text-sm font-semibold text-[#0f172a] bg-transparent border-b border-current outline-none"
+            style={{ color: accent }}
+          />
+        ) : (
+          <button
+            onClick={() => setEditing(true)}
+            className="flex-1 text-left text-sm font-semibold text-[#0f172a] hover:text-current transition-colors"
+            style={{ '--hover-color': accent }}
+            title="Click to rename"
+          >
+            {section.title}
+          </button>
+        )}
+        <span className="text-xs font-mono text-[#94a3b8] shrink-0">{done}/{section.items.length}</span>
+        <button
+          onClick={() => setCollapsed(v => !v)}
+          className="p-1 rounded-lg text-[#94a3b8] hover:bg-[#f8fafc] transition-colors"
+        >
+          <ChevronDown size={14} className="transition-transform" style={{ transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }} />
+        </button>
+        <button
+          onClick={() => { if (window.confirm(`Delete "${section.title}"?`)) deleteSection(section.id) }}
+          className="p-1 rounded-lg text-[#cbd5e1] hover:text-[#ef4444] hover:bg-[#fef2f2] transition-colors"
+        >
+          <Trash2 size={13} />
+        </button>
+      </div>
+
+      {!collapsed && (
+        <div className="px-3 py-3 space-y-2">
+          {section.items.map((item) => (
+            <CustomItem key={item.id} sectionId={section.id} item={item} />
+          ))}
+          <AddItemRow sectionId={section.id} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function AddSectionButton() {
+  const { addSection } = useChecklistStore()
+  const { accent } = useTheme()
+  const [adding, setAdding] = useState(false)
+  const [value, setValue] = useState('')
+  const inputRef = useRef()
+
+  function submit() {
+    const trimmed = value.trim()
+    if (!trimmed) return
+    addSection(trimmed)
+    setValue('')
+    setAdding(false)
+  }
+
+  if (!adding) {
+    return (
+      <button
+        onClick={() => { setAdding(true); setTimeout(() => inputRef.current?.focus(), 0) }}
+        className="flex items-center gap-2 w-full px-4 py-3 rounded-2xl border-2 border-dashed border-[#e2e8f0] text-[#94a3b8] hover:border-current hover:text-current transition-colors text-sm font-medium"
+        style={{ '--tw-border-opacity': 1 }}
+      >
+        <Plus size={15} />
+        Add section
+      </button>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-2 px-4 py-3 rounded-2xl border-2 border-dashed border-current" style={{ borderColor: accent }}>
+      <input
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') { setValue(''); setAdding(false) } }}
+        placeholder="Section name..."
+        className="flex-1 text-sm font-semibold text-[#0f172a] bg-transparent outline-none placeholder-[#cbd5e1]"
+      />
+      <button
+        onClick={submit}
+        disabled={!value.trim()}
+        className="shrink-0 px-3 py-1 rounded-lg text-white text-xs font-semibold disabled:opacity-30 transition-all"
+        style={{ background: accent }}
+      >
+        Add
+      </button>
+      <button onClick={() => { setValue(''); setAdding(false) }} className="text-[#94a3b8] hover:text-[#64748b] text-xs">
+        Cancel
+      </button>
+    </div>
   )
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ChecklistPage() {
-  const { checked, reset } = useChecklistStore()
+  const { checked, customSections, reset } = useChecklistStore()
+  const { accent } = useTheme()
 
-  const total = PHASES.reduce((n, p) => n + p.items.length, 0)
-  const done = Object.values(checked).filter(Boolean).length
-  const pct = total > 0 ? (done / total) * 100 : 0
+  const builtInTotal = CHECKLIST_PHASES.reduce((n, p) => n + p.items.length, 0)
+  const customTotal  = customSections.reduce((n, s) => n + s.items.length, 0)
+  const total = builtInTotal + customTotal
+
+  const builtInDone = CHECKLIST_PHASES.reduce(
+    (n, p) => n + p.items.filter((it) => checked[it.id]).length, 0
+  )
+  const customDone = customSections.reduce(
+    (n, s) => n + s.items.filter((it) => checked[it.id]).length, 0
+  )
+  const done = builtInDone + customDone
+  const pct  = total > 0 ? (done / total) * 100 : 0
 
   return (
     <div className="px-4 pt-4 pb-8 space-y-5">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold text-[#0f172a] tracking-tight">Move Checklist</h1>
-        <p className="text-xs text-[#64748b] mt-0.5">Sunderland, MA → Spokane, WA</p>
-
-        {/* Progress */}
+        <h1 className="text-xl font-bold text-[#0f172a] tracking-tight">Checklist</h1>
         <div className="flex items-center gap-3 mt-3">
           <div className="flex-1 h-1.5 bg-[#f1f5f9] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #f97316, #2563eb)' }}
+              style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${accent}, #2563eb)` }}
             />
           </div>
           <span className="text-xs font-semibold text-[#64748b] shrink-0">{done} / {total}</span>
         </div>
       </div>
 
-      {/* Timeline */}
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
-        <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-4">Timeline</p>
-        <div className="relative flex">
-          {/* Connecting line */}
-          <div className="absolute top-[17px] left-[18px] right-[18px] h-px bg-[#e2e8f0]" />
-          {TIMELINE.map((node) => (
-            <TimelineNode key={node.label} node={node} />
-          ))}
+      {/* Timeline (only shown if the itinerary provides one) */}
+      {CHECKLIST_TIMELINE.length > 0 && (
+        <div className="bg-white rounded-2xl border border-[#e2e8f0] p-4 shadow-sm">
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8] mb-4">Timeline</p>
+          <div className="relative flex">
+            <div className="absolute top-[17px] left-[18px] right-[18px] h-px bg-[#e2e8f0]" />
+            {CHECKLIST_TIMELINE.map((node) => (
+              <TimelineNode key={node.label} node={node} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Phases */}
-      {PHASES.map((phase) => {
+      {/* Built-in phases */}
+      {CHECKLIST_PHASES.map((phase) => {
         const phaseDone = phase.items.filter((item) => checked[item.id]).length
         return (
           <div key={phase.id}>
-            {/* Phase header */}
             <div
               className="flex items-start justify-between px-4 py-3 rounded-2xl mb-2"
               style={{ backgroundColor: phase.accentBg, borderLeft: `3px solid ${phase.accent}` }}
@@ -304,8 +331,6 @@ export default function ChecklistPage() {
                 {phaseDone}/{phase.items.length}
               </span>
             </div>
-
-            {/* Items */}
             <div className="space-y-2">
               {phase.items.map((item) => (
                 <CheckItem key={item.id} item={item} />
@@ -315,14 +340,35 @@ export default function ChecklistPage() {
         )
       })}
 
+      {/* Custom sections */}
+      {customSections.length > 0 && (
+        <div className="space-y-3">
+          {CHECKLIST_PHASES.length > 0 && (
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-[#e2e8f0]" />
+              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#94a3b8]">My Lists</span>
+              <div className="h-px flex-1 bg-[#e2e8f0]" />
+            </div>
+          )}
+          {customSections.map((section) => (
+            <CustomSection key={section.id} section={section} />
+          ))}
+        </div>
+      )}
+
+      {/* Add section */}
+      <AddSectionButton />
+
       {/* Reset */}
-      <button
-        onClick={() => { if (window.confirm('Reset all checkboxes?')) reset() }}
-        className="flex items-center gap-2 mx-auto text-xs text-[#94a3b8] hover:text-[#64748b] transition-colors py-2"
-      >
-        <RotateCcw size={13} />
-        Reset all checkboxes
-      </button>
+      {total > 0 && (
+        <button
+          onClick={() => { if (window.confirm('Reset all checkboxes and delete custom sections?')) reset() }}
+          className="flex items-center gap-2 mx-auto text-xs text-[#94a3b8] hover:text-[#64748b] transition-colors py-2"
+        >
+          <RotateCcw size={13} />
+          Reset all
+        </button>
+      )}
     </div>
   )
 }
